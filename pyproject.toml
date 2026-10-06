@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "novel2drama"
+version = "0.1.0"
+description = "整本小说 → 自动分章 → 人物/世界观/章节关联分析 → 分镜 → 画布重组 → 动漫短剧 → 发布抖音"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "anthropic>=1.11",
+  "pydantic>=2.6",
+  "pillow>=10.0",
+  "requests>=2.31",
+]
+
+[project.optional-dependencies]
+tts = ["edge-tts>=6.1"]
+epub = ["ebooklib>=0.18", "beautifulsoup4>=4.12"]
+web = ["fastapi>=0.110", "uvicorn>=0.29", "python-multipart>=0.0.9"]
+dev = ["pytest>=8"]
+
+[project.scripts]
+novel2drama = "novel2drama.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
