@@ -5,3 +5,4 @@ __pycache__/
 workspace/
 *.mp4
 .env
+examples/**/output/

@@ -1,0 +1,519 @@
+{
+ "episode": {
+  "chapter": 1,
+  "title": "洪太尉误走妖魔",
+  "hashtags": [
+   "水浒传",
+   "国风动画",
+   "水彩动画",
+   "动物版水浒",
+   "古典名著"
+  ],
+  "recap": "",
+  "shots": [
+   {
+    "id": "E01-S01",
+    "duration": 6.0,
+    "shot_type": "大远景",
+    "camera": "拉",
+    "layout": "full_bleed",
+    "location": "dongjing",
+    "characters": [],
+    "action": "瘟疫笼罩的东京城，宫墙寂静",
+    "image_prompt": "vast capital city palace under plague, gloomy fog, empty courtyard",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "那一年春天，东京城闹起了瘟疫，家家闭户，满城愁云。",
+      "emotion": ""
+     }
+    ],
+    "sfx": "",
+    "transition": "黑场",
+    "source_paragraphs": [
+     0
+    ]
+   },
+   {
+    "id": "E01-S02",
+    "duration": 6.0,
+    "shot_type": "远景",
+    "camera": "推",
+    "layout": "full_bleed",
+    "location": "jindian",
+    "characters": [
+     "song_renzong",
+     "hong_xin"
+    ],
+    "action": "仁宗端坐金殿，洪太尉跪接诏书，百官伏地",
+    "image_prompt": "emperor on the golden throne, goose kneeling before the steps, courtiers kneeling in rows",
+    "dialogue": [
+     {
+      "speaker": "song_renzong",
+      "text": "洪太尉，你持朕的丹诏，去龙虎山请天师进京，禳除瘟疫。",
+      "emotion": "忧虑"
+     },
+     {
+      "speaker": "hong_xin",
+      "text": "臣领旨！这点小事，包在臣身上。",
+      "emotion": "自得"
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     1,
+     2
+    ]
+   },
+   {
+    "id": "E01-S03",
+    "duration": 6.0,
+    "shot_type": "大远景",
+    "camera": "移",
+    "layout": "full_bleed",
+    "location": "guandao",
+    "characters": [
+     "hong_xin"
+    ],
+    "action": "太尉的队伍沿江边官道南下，远处群山",
+    "image_prompt": "a tiny procession with followers on the long road beside the river, distant blue mountains, dusk",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "洪太尉带着随从，背着丹诏，一路向南，直奔江西龙虎山。",
+      "emotion": ""
+     }
+    ],
+    "sfx": "",
+    "transition": "叠化",
+    "source_paragraphs": [
+     3
+    ]
+   },
+   {
+    "id": "E01-S04",
+    "duration": 6.0,
+    "shot_type": "大远景",
+    "camera": "推",
+    "layout": "full_bleed",
+    "location": "longhushan",
+    "characters": [],
+    "action": "龙虎山云海，上清宫隐现半山",
+    "image_prompt": "majestic mountains rising from mist, temple halls, bell tower, morning",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "龙虎山上，云雾千重，上清宫钟鼓齐鸣。",
+      "emotion": ""
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     4
+    ]
+   },
+   {
+    "id": "E01-S05",
+    "duration": 7.0,
+    "shot_type": "全景",
+    "camera": "固定",
+    "layout": "full_bleed",
+    "location": "longhushan",
+    "characters": [
+     "zhenren",
+     "hong_xin"
+    ],
+    "action": "真人率道众在宫前迎接太尉",
+    "image_prompt": "temple courtyard, the tortoise abbot and priests greet the goose official in front of the hall",
+    "dialogue": [
+     {
+      "speaker": "zhenren",
+      "text": "天师住在山顶草庵。太尉须斋戒沐浴，独自步行上山，方显诚心。",
+      "emotion": "恭敬"
+     },
+     {
+      "speaker": "hong_xin",
+      "text": "什么？要本官自己爬上去？",
+      "emotion": "不满"
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     4,
+     5
+    ]
+   },
+   {
+    "id": "E01-S06",
+    "duration": 7.0,
+    "shot_type": "大远景",
+    "camera": "摇",
+    "layout": "full_bleed",
+    "location": "shanlu",
+    "characters": [
+     "hong_xin"
+    ],
+    "action": "太尉独自在蜿蜒石阶上爬山，身影极小",
+    "image_prompt": "a tiny goose climbing the winding mountain path alone, pine trees, clouds below",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "山路又陡又长，太尉爬得腿软气喘。",
+      "emotion": ""
+     },
+     {
+      "speaker": "hong_xin",
+      "text": "我在京城锦衣玉食，何曾吃过这种苦！",
+      "emotion": "抱怨"
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     6,
+     7
+    ]
+   },
+   {
+    "id": "E01-S07",
+    "duration": 6.0,
+    "shot_type": "远景",
+    "camera": "手持晃动",
+    "layout": "full_bleed",
+    "location": "shanlu",
+    "characters": [
+     "hong_xin",
+     "mountain_tiger"
+    ],
+    "action": "狂风骤起，猛虎跃出松林，太尉仰面跌倒",
+    "image_prompt": "strong wind, the goose falls backwards on the steps as a huge tiger leaps out of the pine forest",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "忽然狂风大作，松林里跳出一只吊睛白额的大虫！",
+      "emotion": ""
+     }
+    ],
+    "sfx": "虎啸、狂风",
+    "transition": "闪白",
+    "source_paragraphs": [
+     8
+    ]
+   },
+   {
+    "id": "E01-S08",
+    "duration": 6.0,
+    "shot_type": "远景",
+    "camera": "推",
+    "layout": "full_bleed",
+    "location": "shanlu",
+    "characters": [
+     "hong_xin",
+     "white_serpent"
+    ],
+    "action": "雪白大蛇横在路中，太尉抱头大喊",
+    "image_prompt": "a giant white serpent coils across the mountain path, the goose trembles, mist",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "刚爬起来，又一条雪白大蛇横在路上。",
+      "emotion": ""
+     },
+     {
+      "speaker": "hong_xin",
+      "text": "救命啊——",
+      "emotion": "惊恐"
+     }
+    ],
+    "sfx": "蛇信嘶嘶",
+    "transition": "切",
+    "source_paragraphs": [
+     9
+    ]
+   },
+   {
+    "id": "E01-S09",
+    "duration": 7.0,
+    "shot_type": "大远景",
+    "camera": "移",
+    "layout": "full_bleed",
+    "location": "shanlu",
+    "characters": [
+     "zhang_tianshi",
+     "hong_xin"
+    ],
+    "action": "山坡上道童倒骑黄牛吹笛而来，太尉在远处呆望",
+    "image_prompt": "on a distant grassy ridge a little crane boy riding a yellow ox plays a flute, the goose watches, golden afternoon",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "远处传来一阵笛声，一个小道童倒骑黄牛，转过山坡。",
+      "emotion": ""
+     },
+     {
+      "speaker": "zhang_tianshi",
+      "text": "你是来请天师的吧？天师早上已经驾鹤进京啦！",
+      "emotion": "笑"
+     }
+    ],
+    "sfx": "笛声",
+    "transition": "切",
+    "source_paragraphs": [
+     10,
+     11
+    ]
+   },
+   {
+    "id": "E01-S10",
+    "duration": 6.0,
+    "shot_type": "全景",
+    "camera": "拉",
+    "layout": "full_bleed",
+    "location": "longhushan",
+    "characters": [
+     "zhenren",
+     "hong_xin"
+    ],
+    "action": "真人跌足叹气，太尉愣在原地",
+    "image_prompt": "temple courtyard at dusk, the tortoise abbot sighs, the goose stands stunned",
+    "dialogue": [
+     {
+      "speaker": "zhenren",
+      "text": "太尉啊，那骑牛的道童，正是天师本人！",
+      "emotion": "叹息"
+     },
+     {
+      "speaker": "narrator",
+      "text": "太尉当面错过了真人。",
+      "emotion": ""
+     }
+    ],
+    "sfx": "",
+    "transition": "叠化",
+    "source_paragraphs": [
+     12
+    ]
+   },
+   {
+    "id": "E01-S11",
+    "duration": 7.0,
+    "shot_type": "远景",
+    "camera": "推",
+    "layout": "full_bleed",
+    "location": "fumodian",
+    "characters": [
+     "hong_xin",
+     "zhenren"
+    ],
+    "action": "右廊尽头，朱门紧锁、封条交叉的伏魔之殿",
+    "image_prompt": "the goose and the tortoise abbot stand before the sealed hall, red doors with crossed paper seals",
+    "dialogue": [
+     {
+      "speaker": "hong_xin",
+      "text": "这殿为何贴满封条？",
+      "emotion": "好奇"
+     },
+     {
+      "speaker": "zhenren",
+      "text": "这是老祖天师镇锁魔王之处，万万开不得！",
+      "emotion": "惶恐"
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     13,
+     14
+    ]
+   },
+   {
+    "id": "E01-S12",
+    "duration": 6.0,
+    "shot_type": "全景",
+    "camera": "固定",
+    "layout": "full_bleed",
+    "location": "fumodian",
+    "characters": [
+     "hong_xin",
+     "zhenren"
+    ],
+    "action": "太尉摆出官威，道众战战兢兢撕下封条",
+    "image_prompt": "priests tear off the paper seals of the sealed hall while the goose official points, the abbot bows",
+    "dialogue": [
+     {
+      "speaker": "hong_xin",
+      "text": "本官偏要看看魔王长什么样！给我打开！",
+      "emotion": "蛮横"
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     15
+    ]
+   },
+   {
+    "id": "E01-S13",
+    "duration": 8.0,
+    "shot_type": "远景",
+    "camera": "推",
+    "layout": "full_bleed",
+    "location": "dian_nei",
+    "characters": [
+     "hong_xin",
+     "zhenren"
+    ],
+    "action": "漆黑殿内，火把映出龟趺石碑，碑上“遇洪而开”",
+    "image_prompt": "inside the dark hall, torches, a stone tablet on a tortoise base carved with 「遇洪而开」",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "殿中立着一块石碑，背面凿着四个大字——遇洪而开。",
+      "emotion": ""
+     },
+     {
+      "speaker": "hong_xin",
+      "text": "哈哈！这碑等的正是我洪某人！",
+      "emotion": "狂喜"
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     16,
+     17
+    ]
+   },
+   {
+    "id": "E01-S14",
+    "duration": 6.0,
+    "shot_type": "远景",
+    "camera": "固定",
+    "layout": "full_bleed",
+    "location": "dian_nei",
+    "characters": [
+     "hong_xin"
+    ],
+    "action": "众人掘倒石碑，掀开青石板，露出深不见底的地穴",
+    "image_prompt": "workers dug up the tablet, it lies tilted beside a bottomless pit , torches",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "众人掘倒石碑，掀开石板，下面是一个深不见底的地穴。",
+      "emotion": ""
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     17
+    ]
+   },
+   {
+    "id": "E01-S15",
+    "duration": 6.0,
+    "shot_type": "远景",
+    "camera": "拉",
+    "layout": "full_bleed",
+    "location": "dian_nei",
+    "characters": [
+     "hong_xin",
+     "zhenren"
+    ],
+    "action": "黑气从地穴冲天而起，众人东倒西歪",
+    "image_prompt": "black smoke bursts out of the pit , the goose falls, the tortoise kneels",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "一声巨响，一道黑气从地穴里冲天而起！",
+      "emotion": ""
+     }
+    ],
+    "sfx": "巨响",
+    "transition": "闪白",
+    "source_paragraphs": [
+     18
+    ]
+   },
+   {
+    "id": "E01-S16",
+    "duration": 7.0,
+    "shot_type": "大远景",
+    "camera": "拉",
+    "layout": "full_bleed",
+    "location": "fumodian",
+    "characters": [],
+    "action": "黑气掀开殿顶，化作百十道金光四散",
+    "image_prompt": "black smoke erupts through the roof of the sealed hall into the sky and splits into golden light streaks",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "黑气掀开殿顶，在半空中化作百十道金光，四散飞去。",
+      "emotion": ""
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     18
+    ]
+   },
+   {
+    "id": "E01-S17",
+    "duration": 7.0,
+    "shot_type": "大远景",
+    "camera": "摇",
+    "layout": "full_bleed",
+    "location": "tianmu",
+    "characters": [],
+    "action": "夜空中一百零八颗魔星划向四方",
+    "image_prompt": "night sky full of shooting stars streaking to every direction over the ridges",
+    "dialogue": [
+     {
+      "speaker": "zhenren",
+      "text": "太尉，你闯下大祸了！三十六天罡、七十二地煞，全被放出去了！",
+      "emotion": "悲愤"
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     19
+    ]
+   },
+   {
+    "id": "E01-S18",
+    "duration": 7.0,
+    "shot_type": "大远景",
+    "camera": "推",
+    "layout": "full_bleed",
+    "location": "guandao",
+    "characters": [
+     "hong_xin"
+    ],
+    "action": "夜色中太尉一行仓皇下山回京，天边残留流星",
+    "image_prompt": "night, a tiny procession with followers hurries along the long road beside the river, stars fading in the sky",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "太尉连夜逃回京城，对此事绝口不提。可那一百零八颗魔星，已经散落人间。",
+      "emotion": ""
+     }
+    ],
+    "sfx": "",
+    "transition": "黑场",
+    "source_paragraphs": [
+     20
+    ]
+   }
+  ],
+  "cliffhanger": "一百零八颗魔星散落人间，第一颗，会落在谁的身上？"
+ },
+ "scores": null,
+ "lint": {
+  "note": "示例分镜为人工撰写，未经 LLM 评审"
+ }
+}

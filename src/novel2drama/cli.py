@@ -14,6 +14,7 @@ import re
 from pathlib import Path
 
 from .pipeline import Workspace
+from .styles import PRESETS
 
 
 def _load_dotenv(path: Path = Path(".env")) -> None:
@@ -59,7 +60,10 @@ def main(argv: list[str] | None = None) -> None:
         sp.add_argument("--model", default=None, help="Claude 模型 id（默认 claude-opus-5-5）")
         sp.add_argument("--effort", default="high", choices=["low", "medium", "high", "xhigh", "max"])
         sp.add_argument("--threshold", type=int, default=80, help="四项质量分最低阈值，低于则自动重写分镜")
-        sp.add_argument("--image-backend", choices=["placeholder", "sdwebui"], default=None)
+        sp.add_argument("--image-backend", choices=["placeholder", "scenic", "sdwebui"], default=None,
+                        help="默认跟随风格预设")
+        sp.add_argument("--style", choices=sorted(PRESETS), default=None,
+                        help="画面风格：portrait_anime 竖屏动漫 / watercolor_epic 横屏水彩大场景动物角色")
         sp.add_argument("--bgm", type=Path, default=None, help="背景音乐文件")
         sp.add_argument("--force", action="store_true", help="忽略已有分镜重新生成")
         sp.add_argument("--publish", action="store_true", help="真正发布到抖音（默认只生成发布清单）")
@@ -85,9 +89,11 @@ def main(argv: list[str] | None = None) -> None:
     ws_path = args.workspace or str(Path("workspace") / Path(args.novel).stem)
     ws = Workspace(ws_path)
     only = _chapters(args.chapters)
+    if args.style and args.cmd not in ("run", "ingest"):
+        ws.set_style(args.style)
 
     if args.cmd in ("run", "ingest"):
-        ws.ingest(args.novel)
+        ws.ingest(args.novel, style=args.style)
         if args.cmd == "ingest":
             for c in ws.chapters():
                 print(f"{c.index:>4}  {c.title}  ({len(c.text)} 字)")

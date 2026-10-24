@@ -1,0 +1,35 @@
+[
+ {
+  "chapter": 1,
+  "summary": "京城瘟疫，仁宗派洪太尉上龙虎山请天师；太尉上山途中遇虎遇蛇，又当面错过化身道童的天师；次日自负地逼开伏魔殿，掘倒“遇洪而开”石碑，放走一百零八魔星。",
+  "key_events": [
+   "京城瘟疫，仁宗遣洪太尉",
+   "太尉独自上山遇虎蛇",
+   "错过道童化身的天师",
+   "强开伏魔殿",
+   "掘碑放走百八魔星"
+  ],
+  "characters_present": [
+   "song_renzong",
+   "hong_xin",
+   "zhenren",
+   "zhang_tianshi",
+   "mountain_tiger",
+   "white_serpent"
+  ],
+  "locations": [
+   "dongjing",
+   "jindian",
+   "guandao",
+   "longhushan",
+   "shanlu",
+   "fumodian",
+   "dian_nei",
+   "tianmu"
+  ],
+  "emotional_arc": "忧虑 → 傲慢 → 狼狈 → 得意 → 惊恐",
+  "links": [],
+  "hook": "一百零八颗魔星散落人间，第一颗会落在谁身上？",
+  "recap": "洪太尉误开伏魔殿，一百零八魔星散落人间。"
+ }
+]

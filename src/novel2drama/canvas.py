@@ -1,30 +1,32 @@
 """画布重组引擎。
 
-把一个分镜 Shot 变成 9:16 竖屏画布的版式规格（CanvasSpec）：
-- 按 layout 切分面板（单幅 / 上下分屏 / 左右分屏 / 三格漫画 / 大场景 + 特写小窗）；
-- 根据人物关系强度决定双人构图距离与朝向（关系越紧密越靠近）；
+把一个分镜 Shot 变成画布版式规格（CanvasSpec），画布尺寸和镜头偏好来自风格预设：
+- 按 layout 切分面板（全幅 / 双人同框 / 分屏 / 三格漫画 / 大场景 + 特写小窗），竖屏横屏自适应；
+- 根据人物关系强度决定双人构图距离与朝向（关系越紧密越靠近，敌对则拉开对峙）；
+- 大场景风格（wide_first）下把双人/分屏布局改成全幅大景，人物缩小放进山水里；
 - 为每个面板拼装一致性提示词：全剧画风 + 地点锚点 + 角色外貌锚点 + 镜头描述；
-- 避开抖音界面遮挡的安全区放置字幕。
+- 字幕放在安全区内，避开平台界面遮挡。
 渲染层（render/compose.py）只负责照着 CanvasSpec 画图，不做决策。
 """
 from __future__ import annotations
 
 import hashlib
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from .models import Shot, StoryBible
+from .styles import CanvasProfile, StylePreset, get_style
 
-W, H = 1080, 1920
-# 抖音 UI 遮挡：顶部状态栏/搜索，底部标题文案+进度条，右侧点赞评论栏
-SAFE_TOP, SAFE_BOTTOM, SAFE_RIGHT = 150, 420, 140
 GUTTER = 14
 
 SHOT_TYPE_EN = {
     "大远景": "extreme wide shot", "远景": "wide shot", "全景": "full shot", "中景": "medium shot",
     "近景": "medium close-up", "特写": "close-up", "过肩": "over-the-shoulder shot", "主观": "point-of-view shot",
 }
-NEGATIVE = "lowres, bad anatomy, extra fingers, deformed face, text, watermark, logo, blurry, inconsistent character"
+# 各景别下人物高度相对于风格基准的倍数
+SHOT_FIGURE_FACTOR = {
+    "大远景": 0.75, "远景": 1.0, "全景": 1.5, "中景": 2.4, "近景": 3.2, "特写": 4.0, "过肩": 2.4, "主观": 1.0,
+}
 
 
 class Rect(BaseModel):
@@ -37,12 +39,13 @@ class Rect(BaseModel):
 class Panel(BaseModel):
     rect: Rect
     prompt: str
-    negative_prompt: str = NEGATIVE
+    negative_prompt: str = ""
     characters: list[str]
+    figure_prompts: list[str] = Field(default_factory=list, description="与 characters 一一对应的外貌锚点")
     focus: str = "scene"  # scene | character
     seed: int
-    # 双人构图：两人在画面中的水平位置（0-1），用于占位渲染和 ControlNet 等扩展
-    positions: list[float] = []
+    positions: list[float] = Field(default_factory=list, description="人物在画面中的水平位置 0-1")
+    figure_scale: float = 0.45  # 人物高度 / 面板高度
 
 
 class Subtitle(BaseModel):
@@ -54,8 +57,8 @@ class Subtitle(BaseModel):
 
 class CanvasSpec(BaseModel):
     shot_id: str
-    width: int = W
-    height: int = H
+    width: int
+    height: int
     layout: str
     panels: list[Panel]
     subtitles: list[Subtitle]
@@ -64,6 +67,7 @@ class CanvasSpec(BaseModel):
     camera: str
     duration: float
     transition: str
+    postprocess: str = ""
 
 
 def stable_seed(*keys: str) -> int:
@@ -80,8 +84,7 @@ def _pair_staging(bible: StoryBible, a: str, b: str) -> tuple[str, list[float]]:
     r = bible.relation(a, b)
     intensity = r.intensity if r else 2
     rtype = r.type if r else ""
-    hostile = any(k in rtype for k in ("敌", "仇", "对手", "对立"))
-    if hostile:
+    if any(k in rtype for k in ("敌", "仇", "对手", "对立")):
         return "two characters facing off, tense confrontation, opposite sides of frame", [0.2, 0.8]
     if intensity >= 5:
         return "two characters very close together, intimate framing, shoulders touching", [0.42, 0.58]
@@ -92,11 +95,25 @@ def _pair_staging(bible: StoryBible, a: str, b: str) -> tuple[str, list[float]]:
     return "two characters at a distance, reserved body language", [0.22, 0.78]
 
 
-def _compose_prompt(bible: StoryBible, shot: Shot, chars: list[str], extra: str, shot_type: str | None = None) -> str:
+def _group_positions(n: int, seed: int, wide: bool) -> list[float]:
+    """大场景中人物不居中排排站：整体偏向画面一侧（三分法），彼此稍有错落。"""
+    if n == 0:
+        return []
+    if not wide:
+        return [(i + 1) / (n + 1) for i in range(n)]
+    center = 0.33 if seed % 2 == 0 else 0.67
+    spread = min(0.06 * n, 0.4)
+    start = center - spread / 2
+    step = spread / max(1, n - 1)
+    return [round(start + i * step, 3) for i in range(n)]
+
+
+def _compose_prompt(bible: StoryBible, style: StylePreset, shot: Shot, chars: list[str], extra: str,
+                    shot_type: str | None = None) -> str:
     loc = bible.location(shot.location)
     parts = [
-        bible.world.art_style,
-        "vertical 9:16 composition",
+        bible.world.art_style or style.art_style,
+        "vertical 9:16 composition" if not style.canvas.landscape else "horizontal 16:9 composition",
         SHOT_TYPE_EN.get(shot_type or shot.shot_type, "medium shot"),
         extra,
         shot.image_prompt,
@@ -120,10 +137,12 @@ def _split(rect: Rect, n: int, vertical: bool) -> list[Rect]:
     return rects
 
 
-def _choose_layout(shot: Shot, bible: StoryBible) -> str:
-    """模型给的 layout 不合理时做纠正（如 two_shot 但只有一个角色）。"""
+def _choose_layout(shot: Shot, bible: StoryBible, style: StylePreset) -> str:
+    """模型给的 layout 不合理或与风格冲突时做纠正。"""
     n = len(shot.characters)
     layout = shot.layout
+    if style.wide_first and layout in ("two_shot", "split_vertical", "split_horizontal", "single", "inset_closeup"):
+        return "full_bleed"
     if layout in ("two_shot", "split_vertical", "split_horizontal") and n < 2:
         return "single" if n == 1 else "full_bleed"
     if layout == "single" and n >= 2:
@@ -133,45 +152,70 @@ def _choose_layout(shot: Shot, bible: StoryBible) -> str:
     return layout
 
 
-def build_canvas(shot: Shot, bible: StoryBible) -> CanvasSpec:
-    layout = _choose_layout(shot, bible)
+def build_canvas(shot: Shot, bible: StoryBible, style: StylePreset | str | None = None) -> CanvasSpec:
+    style = style if isinstance(style, StylePreset) else get_style(style)
+    cv: CanvasProfile = style.canvas
+    W, H = cv.width, cv.height
+    layout = _choose_layout(shot, bible, style)
     full = Rect(x=0, y=0, w=W, h=H)
     chars = shot.characters
     panels: list[Panel] = []
     seed = stable_seed(bible.title, shot.id)
+    base_scale = style.figure_scale * SHOT_FIGURE_FACTOR.get(shot.shot_type, 1.0)
 
-    def panel(rect: Rect, cs: list[str], extra: str = "", focus: str = "scene",
-              shot_type: str | None = None, positions: list[float] | None = None, salt: str = "") -> Panel:
+    def panel(rect: Rect, cs: list[str], extra: str = "", focus: str = "scene", shot_type: str | None = None,
+              positions: list[float] | None = None, salt: str = "", scale: float | None = None) -> Panel:
         # 角色单人特写用角色 id 作为种子，保持同一角色多次特写的长相稳定
-        pseed = stable_seed(bible.title, cs[0]) if focus == "character" and len(cs) == 1 else stable_seed(str(seed), salt)
-        return Panel(rect=rect, prompt=_compose_prompt(bible, shot, cs, extra, shot_type),
-                     characters=cs, focus=focus, seed=pseed, positions=positions or [])
+        pseed = (stable_seed(bible.title, cs[0]) if focus == "character" and len(cs) == 1
+                 else stable_seed(str(seed), salt))
+        figures = []
+        for c in cs:
+            ch = bible.character(c)
+            figures.append(ch.visual_prompt if ch else c)
+        return Panel(
+            rect=rect, prompt=_compose_prompt(bible, style, shot, cs, extra, shot_type),
+            negative_prompt=style.negative, characters=cs, figure_prompts=figures, focus=focus, seed=pseed,
+            positions=positions if positions is not None else _group_positions(len(cs), pseed, style.wide_first),
+            figure_scale=min(0.9, scale if scale is not None else base_scale),
+        )
 
     if layout == "two_shot" and len(chars) >= 2:
         staging, pos = _pair_staging(bible, chars[0], chars[1])
         panels.append(panel(full, chars[:2], staging, positions=pos))
-    elif layout == "split_vertical" and len(chars) >= 2:
-        top, bottom = _split(full, 2, vertical=True)
+    elif layout in ("split_vertical", "split_horizontal") and len(chars) >= 2:
+        # 竖屏上下分、横屏左右分，保证每格都接近原画幅比例
+        vertical = layout == "split_vertical" and not cv.landscape
+        a, b = _split(full, 2, vertical=vertical)
         staging, _ = _pair_staging(bible, chars[0], chars[1])
-        panels.append(panel(top, [chars[0]], f"{staging}, this panel shows only one side", "character", "近景", salt="a"))
-        panels.append(panel(bottom, [chars[1]], f"{staging}, reverse angle", "character", "近景", salt="b"))
-    elif layout == "split_horizontal" and len(chars) >= 2:
-        left, right = _split(full, 2, vertical=False)
-        panels.append(panel(left, [chars[0]], "facing right", "character", "近景", salt="a"))
-        panels.append(panel(right, [chars[1]], "facing left", "character", "近景", salt="b"))
+        close = style.figure_scale * SHOT_FIGURE_FACTOR["近景"]
+        panels.append(panel(a, [chars[0]], f"{staging}, this panel shows only one side", "character", "近景",
+                            salt="a", scale=close))
+        panels.append(panel(b, [chars[1]], f"{staging}, reverse angle", "character", "近景", salt="b", scale=close))
     elif layout == "manga_3":
-        top = Rect(x=0, y=0, w=W, h=int(H * 0.42))
-        rest = Rect(x=0, y=top.h + GUTTER, w=W, h=H - top.h - GUTTER)
-        left, right = _split(rest, 2, vertical=False)
-        panels.append(panel(top, chars, "establishing moment", shot_type="全景", salt="1"))
-        panels.append(panel(left, chars[:1], "reaction", "character", "特写", salt="2"))
-        panels.append(panel(right, chars[1:2] or chars[:1], "detail of the action", "character", "特写", salt="3"))
+        if cv.landscape:
+            main = Rect(x=0, y=0, w=int(W * 0.62), h=H)
+            side = Rect(x=main.w + GUTTER, y=0, w=W - main.w - GUTTER, h=H)
+            s1, s2 = _split(side, 2, vertical=True)
+        else:
+            main = Rect(x=0, y=0, w=W, h=int(H * 0.42))
+            rest = Rect(x=0, y=main.h + GUTTER, w=W, h=H - main.h - GUTTER)
+            s1, s2 = _split(rest, 2, vertical=False)
+        detail = style.figure_scale * SHOT_FIGURE_FACTOR["全景"] * (1 if style.wide_first else 2.5)
+        panels.append(panel(main, chars, "establishing moment", shot_type="全景" if not style.wide_first else None,
+                            salt="1"))
+        panels.append(panel(s1, chars[:1], "reaction", "character", "全景" if style.wide_first else "特写",
+                            salt="2", scale=detail))
+        panels.append(panel(s2, chars[1:2] or chars[:1], "detail of the action", "character",
+                            "全景" if style.wide_first else "特写", salt="3", scale=detail))
     elif layout == "inset_closeup" and chars:
         panels.append(panel(full, chars, salt="bg"))
-        inset = Rect(x=W - SAFE_RIGHT - 380, y=SAFE_TOP + 40, w=380, h=480)
-        panels.append(panel(inset, chars[:1], "emotional facial expression", "character", "特写", salt="inset"))
+        iw, ih = (int(W * 0.24), int(H * 0.36)) if cv.landscape else (380, 480)
+        inset = Rect(x=W - cv.safe_right - iw, y=cv.safe_top + 40, w=iw, h=ih)
+        panels.append(panel(inset, chars[:1], "emotional facial expression", "character", "特写", salt="inset",
+                            scale=0.75))
     else:
-        focus = "character" if layout == "single" and len(chars) == 1 and shot.shot_type in ("近景", "特写") else "scene"
+        focus = ("character" if layout == "single" and len(chars) == 1 and shot.shot_type in ("近景", "特写")
+                 else "scene")
         panels.append(panel(full, chars, focus=focus))
 
     accent = bible.world.palette[0] if bible.world.palette else "#FFD54F"
@@ -184,8 +228,15 @@ def build_canvas(shot: Shot, bible: StoryBible) -> CanvasSpec:
             text=line.text,
             color="#FFFFFF" if line.speaker == "narrator" else accent,
         ))
-    box = Rect(x=60, y=H - SAFE_BOTTOM - 260, w=W - 60 - SAFE_RIGHT, h=240)
+    if cv.landscape:
+        # 横屏：贴底的窄字幕条，画面主体（人物站位线 ≤ 0.8H）不被遮挡
+        bw = int(W * 0.76)
+        bh = int(H * 0.13)
+        box = Rect(x=(W - bw) // 2, y=H - int(H * 0.025) - bh, w=bw, h=bh)
+    else:
+        box = Rect(x=cv.safe_left, y=H - cv.safe_bottom - 260, w=W - cv.safe_left - cv.safe_right, h=240)
     return CanvasSpec(
-        shot_id=shot.id, layout=layout, panels=panels, subtitles=subtitles, subtitle_box=box,
+        shot_id=shot.id, width=W, height=H, layout=layout, panels=panels, subtitles=subtitles, subtitle_box=box,
         accent=accent, camera=shot.camera, duration=shot.duration, transition=shot.transition,
+        postprocess=style.postprocess,
     )

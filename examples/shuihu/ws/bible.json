@@ -1,0 +1,223 @@
+{
+ "title": "水浒传·动物版",
+ "world": {
+  "genre": "古典英雄传奇",
+  "era": "北宋仁宗年间",
+  "tone": "雄浑、诙谐、宿命感",
+  "rules": [
+   "龙虎山上清宫世代由天师镇守",
+   "伏魔殿下镇锁三十六天罡、七十二地煞，共一百零八魔君",
+   "所有角色均为拟人动物，性格与原著人物一致"
+  ],
+  "factions": [
+   {
+    "name": "朝廷",
+    "description": "东京汴梁的宋室朝廷",
+    "members": [
+     "song_renzong",
+     "hong_xin"
+    ]
+   },
+   {
+    "name": "龙虎山上清宫",
+    "description": "天师道祖庭",
+    "members": [
+     "zhang_tianshi",
+     "zhenren"
+    ]
+   }
+  ],
+  "art_style": "traditional chinese watercolor and ink line animation, loose ink outlines, soft watercolor washes, rice paper texture, epic wide landscape, tiny figures in vast scenery, third-person view, anthropomorphic animal characters in period costume",
+  "palette": [
+   "#E8B04B",
+   "#3C5A6B",
+   "#A63A32",
+   "#F2EAD8"
+  ]
+ },
+ "characters": [
+  {
+   "id": "song_renzong",
+   "name": "宋仁宗",
+   "aliases": [
+    "皇帝",
+    "官家"
+   ],
+   "role": "配角",
+   "personality": "仁厚而忧心百姓",
+   "appearance": "白狮，金冠，明黄龙袍",
+   "visual_prompt": "white lion emperor, golden crown, yellow dragon robe",
+   "voice": "威严浑厚",
+   "first_chapter": 1,
+   "arc": ""
+  },
+  {
+   "id": "hong_xin",
+   "name": "洪信",
+   "aliases": [
+    "洪太尉",
+    "太尉"
+   ],
+   "role": "本集主角",
+   "personality": "自负傲慢、好面子，胆小却爱逞强",
+   "appearance": "胖白鹅，乌纱帽，绯红官袍",
+   "visual_prompt": "plump goose official, black winged hat, crimson official robe",
+   "voice": "中年男声，浮夸",
+   "first_chapter": 1,
+   "arc": ""
+  },
+  {
+   "id": "zhenren",
+   "name": "上清宫住持",
+   "aliases": [
+    "真人",
+    "住持真人"
+   ],
+   "role": "配角",
+   "personality": "持重谨慎、恪守祖训",
+   "appearance": "老龟道长，灰色道袍，白须",
+   "visual_prompt": "old tortoise taoist abbot, topknot, gray taoist robe, white beard",
+   "voice": "苍老温和",
+   "first_chapter": 1,
+   "arc": ""
+  },
+  {
+   "id": "zhang_tianshi",
+   "name": "张天师",
+   "aliases": [
+    "道童",
+    "天师",
+    "嗣汉天师"
+   ],
+   "role": "配角",
+   "personality": "超然洒脱、未卜先知",
+   "appearance": "化身小白鹤道童，青色道袍，倒骑黄牛吹铁笛",
+   "visual_prompt": "little white crane taoist boy riding a yellow ox, azure robe, iron flute",
+   "voice": "童声清亮",
+   "first_chapter": 1,
+   "arc": ""
+  },
+  {
+   "id": "mountain_tiger",
+   "name": "山中大虫",
+   "aliases": [
+    "大虫",
+    "老虎"
+   ],
+   "role": "精怪",
+   "personality": "凶猛（天师所化考验）",
+   "appearance": "吊睛白额猛虎",
+   "visual_prompt": "huge wild tiger, white forehead, mountain beast",
+   "voice": "虎啸",
+   "first_chapter": 1,
+   "arc": ""
+  },
+  {
+   "id": "white_serpent",
+   "name": "雪白大蛇",
+   "aliases": [
+    "大蛇"
+   ],
+   "role": "精怪",
+   "personality": "冷峻（天师所化考验）",
+   "appearance": "雪白巨蛇",
+   "visual_prompt": "giant white serpent",
+   "voice": "嘶嘶",
+   "first_chapter": 1,
+   "arc": ""
+  }
+ ],
+ "relationships": [
+  {
+   "source": "song_renzong",
+   "target": "hong_xin",
+   "type": "君臣",
+   "description": "仁宗命洪太尉赴龙虎山请天师",
+   "intensity": 3,
+   "since_chapter": 1,
+   "history": []
+  },
+  {
+   "source": "hong_xin",
+   "target": "zhenren",
+   "type": "宾主/对立",
+   "description": "太尉仗势逼迫真人打开伏魔殿",
+   "intensity": 3,
+   "since_chapter": 1,
+   "history": [
+    "第1章: 礼遇 → 逼迫开殿，真人怨其闯祸"
+   ]
+  },
+  {
+   "source": "hong_xin",
+   "target": "zhang_tianshi",
+   "type": "求请/错过",
+   "description": "太尉当面不识天师",
+   "intensity": 2,
+   "since_chapter": 1,
+   "history": []
+  },
+  {
+   "source": "zhenren",
+   "target": "zhang_tianshi",
+   "type": "师门",
+   "description": "同属天师道，真人奉天师为尊",
+   "intensity": 3,
+   "since_chapter": 1,
+   "history": []
+  }
+ ],
+ "locations": [
+  {
+   "id": "dongjing",
+   "name": "东京城",
+   "description": "瘟疫笼罩的京城",
+   "visual_prompt": "capital city palace, red palace walls, gloomy plague fog, empty streets"
+  },
+  {
+   "id": "jindian",
+   "name": "金殿",
+   "description": "皇帝临朝的大殿",
+   "visual_prompt": "imperial throne hall, red pillars, golden throne"
+  },
+  {
+   "id": "guandao",
+   "name": "南下官道",
+   "description": "通往江西信州的官道",
+   "visual_prompt": "long official road along a river toward distant mountains"
+  },
+  {
+   "id": "longhushan",
+   "name": "龙虎山",
+   "description": "云雾缠绕的道教名山",
+   "visual_prompt": "towering mountains in a sea of clouds, taoist temple halls on the slope"
+  },
+  {
+   "id": "shanlu",
+   "name": "上山石阶",
+   "description": "通往山顶草庵的陡峭山路",
+   "visual_prompt": "steep mountain path with stone steps up through pine forest"
+  },
+  {
+   "id": "fumodian",
+   "name": "伏魔之殿",
+   "description": "被封条锁住的殿宇",
+   "visual_prompt": "sealed hall with crossed paper seals on red doors, plaque 『伏魔之殿』"
+  },
+  {
+   "id": "dian_nei",
+   "name": "伏魔殿内",
+   "description": "漆黑殿内，石碑立于龟趺之上",
+   "visual_prompt": "dark hall interior lit by torches, stone tablet on a tortoise base"
+  },
+  {
+   "id": "tianmu",
+   "name": "龙虎山夜空",
+   "description": "魔星四散的天空",
+   "visual_prompt": "night sky full of falling stars above dark mountain ridges"
+  }
+ ],
+ "plot_threads": [
+  "一百零八魔星散落人间，将各自投胎"
+ ]
+}

@@ -7,7 +7,8 @@ import pytest
 
 from fake_llm import FakeLLM
 from novel2drama.analysis.storyboard import storyboard_chapter
-from novel2drama.canvas import H, SAFE_BOTTOM, W, build_canvas
+from novel2drama.canvas import build_canvas
+from novel2drama.styles import PORTRAIT
 from novel2drama.chapters import split_chapters
 from novel2drama.llm import strict_schema
 from novel2drama.models import Episode
@@ -78,10 +79,10 @@ def test_canvas_layout_respects_relationships(tmp_path):
     left, right = spec.panels[0].positions
     assert right - left < 0.3
     assert "lean teenage boy" in spec.panels[0].prompt and "xianxia" in spec.panels[0].prompt
-    assert spec.subtitle_box.y + spec.subtitle_box.h <= H - SAFE_BOTTOM
+    assert spec.subtitle_box.y + spec.subtitle_box.h <= PORTRAIT.height - PORTRAIT.safe_bottom
     manga = build_canvas(ep.shots[2], bible)
     assert len(manga.panels) == 3
-    assert all(p.rect.x + p.rect.w <= W for p in manga.panels)
+    assert all(p.rect.x + p.rect.w <= PORTRAIT.width for p in manga.panels)
 
 
 def test_caption_and_dry_run(tmp_path):

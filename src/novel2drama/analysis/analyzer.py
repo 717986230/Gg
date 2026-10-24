@@ -10,10 +10,11 @@ from collections.abc import Callable
 from pydantic import BaseModel, Field
 
 from ..llm import LLM
+from ..styles import StylePreset
 from ..models import AnalysisDelta, Chapter, ChapterAnalysis, StoryBible
 from .bible import apply_delta, bible_brief
 
-SYSTEM = """你是资深的动漫短剧改编编剧兼设定统筹。你的任务是把网络小说忠实地改编成抖音竖屏动漫短剧。
+SYSTEM = """你是资深的动漫短剧改编编剧兼设定统筹。你的任务是把网络小说忠实地改编成抖音动漫短剧。
 改编原则（按优先级）：
 1. 小说还原度：情节、台词、人物性格以原文为准，不杜撰原文没有的关键情节。
 2. 人物关系：准确识别人物之间的关系及其演变，关系是剧情张力的核心。
@@ -21,6 +22,12 @@ SYSTEM = """你是资深的动漫短剧改编编剧兼设定统筹。你的任�
 4. 章节关联：每章都要识别与前文的因果、伏笔回收、人物重逢、关系转折等联系。
 角色 id 一律使用小写拼音或英文下划线形式（如 lin_xiao），一旦确定绝不更改；引用已有角色时必须使用故事圣经里的 id。
 visual_prompt 一律用英文，描述稳定的外观特征（发型发色、瞳色、年龄感、服饰、标志物），不要写动作和表情。"""
+
+
+def system_for(style: StylePreset | None) -> str:
+    if style and style.character_rules:
+        return SYSTEM + "\n本剧风格：" + style.description + "\n角色设计要求：" + style.character_rules
+    return SYSTEM
 
 
 class BibleSeed(BaseModel):
@@ -32,15 +39,18 @@ def _toc(chapters: list[Chapter]) -> str:
     return "\n".join(f"{c.index}. {c.title}" for c in chapters)
 
 
-def seed_bible(llm: LLM, title: str, chapters: list[Chapter], sample_chapters: int = 2) -> StoryBible:
+def seed_bible(llm: LLM, title: str, chapters: list[Chapter], sample_chapters: int = 2,
+               style: StylePreset | None = None) -> StoryBible:
     sample = "\n\n".join(f"## {c.title}\n{c.text}" for c in chapters[:sample_chapters])
     prompt = (
         f"小说《{title}》共 {len(chapters)} 章。目录：\n{_toc(chapters)}\n\n开篇正文：\n{sample}\n\n"
         "请据此建立初始故事圣经：判断题材、时代、基调，确定统一的动漫画风(art_style)与 3-5 个主色调，"
         "列出开篇已出场的角色、关系、地点与世界观规则。characters/relationships/locations 只写开篇确实出现的。"
     )
-    seed = llm.structured(system=SYSTEM, context="", prompt=prompt, schema=BibleSeed)
+    seed = llm.structured(system=system_for(style), context="", prompt=prompt, schema=BibleSeed)
     seed.bible.title = title
+    if style and style.character_rules:
+        seed.bible.world.art_style = style.art_style  # 风格预设的画风优先
     return seed.bible
 
 
@@ -57,7 +67,8 @@ def _recap(analyses: list[ChapterAnalysis], detailed_last: int = 5) -> str:
     return "【前情摘要】\n" + "\n".join(lines)
 
 
-def analyze_chapter(llm: LLM, bible: StoryBible, chapter: Chapter, previous: list[ChapterAnalysis]) -> AnalysisDelta:
+def analyze_chapter(llm: LLM, bible: StoryBible, chapter: Chapter, previous: list[ChapterAnalysis],
+                    style: StylePreset | None = None) -> AnalysisDelta:
     context = bible_brief(bible) + "\n\n" + _recap(previous)
     prompt = (
         f"请分析第{chapter.index}章《{chapter.title}》。正文（[n] 为段落编号）：\n{chapter.numbered_text()}\n\n"
@@ -70,7 +81,7 @@ def analyze_chapter(llm: LLM, bible: StoryBible, chapter: Chapter, previous: lis
         "- 新埋下的伏笔放 plot_threads_opened；本章回收的伏笔（照抄故事圣经 plot_threads 原文）放 plot_threads_closed。\n"
         "- hook 写本集结尾最抓人的悬念；recap 写下一集开头用的一句话前情提要。"
     )
-    delta = llm.structured(system=SYSTEM, context=context, prompt=prompt, schema=AnalysisDelta)
+    delta = llm.structured(system=system_for(style), context=context, prompt=prompt, schema=AnalysisDelta)
     delta.analysis.chapter = chapter.index
     delta.analysis.links = [l for l in delta.analysis.links if 0 < l.target_chapter < chapter.index]
     return delta
@@ -83,15 +94,16 @@ def analyze_novel(
     bible: StoryBible | None = None,
     done: list[ChapterAnalysis] | None = None,
     on_chapter: Callable[[StoryBible, ChapterAnalysis], None] | None = None,
+    style: StylePreset | None = None,
 ) -> tuple[StoryBible, list[ChapterAnalysis]]:
     """可断点续跑：传入已完成的 bible/analyses 会从下一章继续。"""
-    bible = bible or seed_bible(llm, title, chapters)
+    bible = bible or seed_bible(llm, title, chapters, style=style)
     analyses = list(done or [])
     finished = {a.chapter for a in analyses}
     for chapter in chapters:
         if chapter.index in finished:
             continue
-        delta = analyze_chapter(llm, bible, chapter, analyses)
+        delta = analyze_chapter(llm, bible, chapter, analyses, style=style)
         bible = apply_delta(bible, delta)
         analyses.append(delta.analysis)
         if on_chapter:

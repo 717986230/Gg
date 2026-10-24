@@ -21,6 +21,7 @@ from .analysis.storyboard import storyboard_chapter
 from .chapters import guess_title, read_text, split_chapters
 from .llm import LLM
 from .models import Chapter, ChapterAnalysis, Episode, QualityScores, StoryBible
+from .styles import StylePreset, get_style
 
 log = logging.getLogger("novel2drama")
 
@@ -46,6 +47,14 @@ class Workspace:
     @property
     def meta(self) -> dict:
         return self._read("meta.json") or {}
+
+    @property
+    def style(self) -> StylePreset:
+        return get_style(self.meta.get("style"))
+
+    def set_style(self, name: str) -> None:
+        get_style(name)  # 校验
+        self._write("meta.json", {**self.meta, "style": name})
 
     def chapters(self) -> list[Chapter]:
         return TypeAdapter(list[Chapter]).validate_python(self._read("chapters.json") or [])
@@ -75,11 +84,12 @@ class Workspace:
         return self.root / "output" / f"E{n:03d}"
 
     # ---------------------------------------------------------- 阶段
-    def ingest(self, novel_path: str | Path) -> list[Chapter]:
+    def ingest(self, novel_path: str | Path, style: str | None = None) -> list[Chapter]:
         text = read_text(novel_path)
         chapters = split_chapters(text)
         self._write("meta.json", {"title": guess_title(novel_path, text), "source": str(novel_path),
-                                  "chapters": len(chapters), "chars": len(text)})
+                                  "chapters": len(chapters), "chars": len(text),
+                                  "style": style or self.meta.get("style") or get_style(None).name})
         self._write("chapters.json", [c.model_dump() for c in chapters])
         log.info("切分出 %d 章", len(chapters))
         return chapters
@@ -98,7 +108,7 @@ class Workspace:
                      len(bible.relationships), len(a.links))
 
         bible, _ = analyze_novel(llm, self.meta.get("title", self.root.name), chapters,
-                                 bible=self.bible(), done=list(analyses), on_chapter=checkpoint)
+                                 bible=self.bible(), done=list(analyses), on_chapter=checkpoint, style=self.style)
         self._write("bible.json", bible.model_dump())
         return bible, self.analyses()
 
@@ -118,7 +128,8 @@ class Workspace:
             if not force and (existing := self.episode(ch.index)):
                 episodes.append(existing[0])
                 continue
-            ep, scores, lint = storyboard_chapter(llm, bible, ch, history[ch.index], history, threshold=threshold)
+            ep, scores, lint = storyboard_chapter(llm, bible, ch, history[ch.index], history, threshold=threshold,
+                                                  style=self.style)
             self.save_episode(ep, scores, {"errors": lint.errors, "coverage": lint.coverage,
                                            "pair_coverage": lint.pair_coverage})
             log.info("第%d集分镜：%d 镜 %.0fs｜关系%d 世界观%d 还原%d 章节%d", ch.index, len(ep.shots), ep.duration,
@@ -136,7 +147,8 @@ class Workspace:
         bible = self.bible()
         if bible is None:
             raise RuntimeError("请先执行 analyze")
-        backend = get_backend(image_backend)
+        style = self.style
+        backend = get_backend(image_backend or style.default_backend)
         tts = TTS(bible)
         videos = []
         for ch in self.chapters():
@@ -145,7 +157,8 @@ class Workspace:
             found = self.episode(ch.index)
             if not found:
                 continue
-            video, _ = render_episode(found[0], bible, backend, self.output_dir(ch.index), tts=tts, bgm=bgm)
+            video, _ = render_episode(found[0], bible, backend, self.output_dir(ch.index), tts=tts, bgm=bgm,
+                                      style=style)
             log.info("第%d集已渲染：%s", ch.index, video)
             videos.append(video)
         return videos

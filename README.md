@@ -70,12 +70,43 @@ workspace/<项目>/
   publish.json         发布记录（已发布的集不会重复发）
 ```
 
+## 画面风格
+
+用 `--style` 选择风格；风格会写入工作区，分析、分镜、渲染各阶段都按它执行：
+
+| 风格 | 画幅 | 特点 |
+|---|---|---|
+| `portrait_anime`（默认） | 竖屏 1080×1920 | 赛璐璐动漫，近景、特写多，双人同框/分屏表现人物关系 |
+| `watercolor_epic` | 横屏 1280×720 | 水彩加墨线；大场景、人物小、第三视角；角色都设计成拟人动物；远景为主，运镜像长卷缓缓展开 |
+
+`watercolor_epic` 风格的具体规则：
+- 分析阶段：要求模型按性格、身份、绰号给每个角色选动物（威猛者用虎豹、文雅者用鹤鹿、傲慢的官员用鹅等），英文外貌描述以动物名开头。
+- 分镜阶段：至少 70% 是远景镜头，禁用主观镜头和特写，规则检查不过会自动重写。
+- 画布阶段：双人、分屏、小窗等布局统一改为全幅大景，人物按景别缩小，偏向画面一侧站位。
+- 渲染阶段：默认使用 `scenic` 后端。它根据镜头描述里的关键词，用程序画出山水、宫殿、道观、殿内、石碑、黑气、金光、星火等场景和小动物人物，不需要显卡。最后每帧再经过一遍水彩墨线滤镜，统一画风。接入 SD 后用 `--image-backend sdwebui`，滤镜照样生效。
+
+### 示例：《水浒传》第一回（动物版）
+
+`examples/shuihu/` 里有第一回的白话改写稿，以及一个已经做好的工作区：故事圣经和 18 个镜头的分镜都是人工撰写的，没经过模型生成和评分。不需要 API Key，可以直接渲染：
+
+```bash
+novel2drama render -w examples/shuihu/ws   # 输出 examples/shuihu/ws/output/E001/episode_001.mp4
+```
+
+角色设定：洪太尉是穿绯袍、戴乌纱帽的胖白鹅；宋仁宗是穿龙袍的白狮；上清宫住持是老龟道长；张天师化身为倒骑黄牛、吹铁笛的小白鹤道童；山中大虫和雪白大蛇按原文保留为精怪。
+
+想让模型从头分析整本书：
+
+```bash
+novel2drama run 水浒传.txt -w workspace/shuihu --style watercolor_epic -c 1-3
+```
+
 ## 配置说明
 
 | 变量 | 说明 |
 |---|---|
 | `ANTHROPIC_API_KEY` | Claude API Key。剧情分析、分镜和评审都用 Claude，默认模型 `claude-opus-5-5`，可用 `--model` 覆盖 |
-| `NOVEL2DRAMA_IMAGE_BACKEND` | `placeholder` 或 `sdwebui`；建议在 SD 里加载动漫底模，并为主角训练 LoRA，一致性更好 |
+| `NOVEL2DRAMA_IMAGE_BACKEND` | `placeholder`、`scenic` 或 `sdwebui`（不设置时跟随风格）；建议在 SD 里加载动漫底模，并为主角训练 LoRA，一致性更好 |
 | `SDWEBUI_URL` | SD WebUI 地址，需要用 `--api` 启动 |
 | `NOVEL2DRAMA_TTS` | `edge`（默认）或 `silent` |
 | `NOVEL2DRAMA_FONT` | 字幕字体路径（默认自动查找文泉驿 / 思源黑体 / 苹方 / 微软雅黑） |

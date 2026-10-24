@@ -17,13 +17,22 @@ FEMALE_HINTS = ("女", "少女", "御姐", "萝莉", "姐", "妹", "娘", "母",
 
 def assign_voices(bible: StoryBible) -> dict[str, str]:
     voices = {"narrator": NARRATOR}
+    used: set[str] = {NARRATOR}
     for c in bible.characters:
         desc = f"{c.voice} {c.appearance} {c.visual_prompt}".lower()
-        pool = FEMALE if any(h in desc for h in FEMALE_HINTS) else MALE
-        if any(k in c.voice for k in ("低沉", "沙哑", "苍老", "浑厚")) and pool is MALE:
-            voices[c.id] = "zh-CN-YunjianNeural"
+        female = any(h in desc for h in FEMALE_HINTS)
+        if any(k in c.voice for k in ("童", "孩", "稚")):
+            voice = "zh-CN-XiaoyiNeural" if female else "zh-CN-YunxiaNeural"
+        elif not female and any(k in c.voice for k in ("苍老", "年迈", "老者")):
+            voice = "zh-CN-YunyeNeural"
+        elif not female and any(k in c.voice for k in ("低沉", "沙哑", "浑厚", "威严")):
+            voice = "zh-CN-YunjianNeural"
         else:
-            voices[c.id] = pool[stable_seed(c.id) % len(pool)]
+            pool = FEMALE if female else MALE
+            free = [v for v in pool if v not in used] or pool
+            voice = free[stable_seed(c.id) % len(free)]
+        voices[c.id] = voice
+        used.add(voice)
     return voices
 
 
@@ -41,6 +50,19 @@ def _silence(path: Path, seconds: float) -> None:
          "-t", f"{seconds:.2f}", "-c:a", "libmp3lame", str(path)],
         check=True,
     )
+
+
+async def _edge_save(text: str, voice: str, out: Path) -> None:
+    """edge-tts 默认用 certifi 证书、且不读代理环境变量；这里改用系统证书库并显式走 HTTPS_PROXY，
+    这样在公司代理 / 云端沙箱等需要自定义 CA 的网络里也能用。"""
+    import ssl
+
+    import aiohttp
+    import edge_tts
+
+    connector = aiohttp.TCPConnector(ssl=ssl.create_default_context())
+    proxy = os.environ.get("HTTPS_PROXY") or os.environ.get("https_proxy") or None
+    await edge_tts.Communicate(text, voice, connector=connector, proxy=proxy).save(str(out))
 
 
 class TTS:
@@ -61,7 +83,7 @@ class TTS:
 
                 voice = self.voices.get(speaker, NARRATOR)
                 try:
-                    asyncio.run(edge_tts.Communicate(text, voice).save(str(out)))
+                    asyncio.run(_edge_save(text, voice, out))
                 except Exception:  # 网络失败时退化为静音，不中断整集渲染
                     _silence(out, max(1.2, len(text) / 4.5))
             else:

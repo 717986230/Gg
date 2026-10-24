@@ -1,6 +1,7 @@
 """图像生成后端。
 
 - placeholder：离线占位图（场景色块 + 角色剪影 + 镜头描述），无需 GPU，用于联调和预览分镜节奏；
+- scenic：程序化水彩场景（山水/宫殿/道观/大殿 + 小人物），无需 GPU，适合大场景风格；
 - sdwebui：调用 Stable Diffusion WebUI / Forge 的 /sdapi/v1/txt2img，固定种子保证角色一致。
 新增后端只需实现 ImageBackend.generate。
 """
@@ -114,4 +115,8 @@ def get_backend(name: str | None = None) -> ImageBackend:
         return SDWebUIBackend()
     if name == "placeholder":
         return PlaceholderBackend()
+    if name == "scenic":
+        from .scenic import ScenicBackend
+
+        return ScenicBackend()
     raise ValueError(f"未知图像后端: {name}")

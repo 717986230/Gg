@@ -11,22 +11,25 @@ from dataclasses import dataclass, field
 
 from ..llm import LLM
 from ..models import Chapter, ChapterAnalysis, Episode, QualityScores, StoryBible
-from .analyzer import SYSTEM
+from ..styles import StylePreset, get_style
+from .analyzer import system_for
 from .bible import bible_brief, resolve_character_id
 
-STORYBOARD_RULES = """分镜规范（抖音竖屏 9:16 动漫短剧）：
-- 单集时长 60-180 秒；镜头 12-40 个；单镜 1.5-8 秒，台词镜头按每秒 4-5 个汉字估算时长。
+STORYBOARD_RULES = """分镜通用规范：
+- 单镜 1.5-8 秒，台词镜头按每秒 4-5 个汉字估算时长。
 - 开头 3 秒必须是强钩子（冲突/悬念/高光画面），若有前情则先用 recap。
 - 结尾停在 cliffhanger 上，引导看下一集。
 - 每个镜头的 source_paragraphs 必须指向它改编自的原文段落编号；全集应覆盖本章主要情节段落。
 - 台词优先使用原文对白；原文没有对白的关键心理活动用 narrator 旁白或角色内心独白。
 - characters 只能使用故事圣经中存在的角色 id；location 只能使用故事圣经中的地点 id。
-- 关系紧密（intensity≥4）的角色同场时，优先使用 two_shot / split_vertical / inset_closeup 等能体现二人关系的布局，
-  并安排反应镜头（一人说话、另一人特写）。
 - 世界观设定（招式、法宝、科技、服饰、建筑）在 image_prompt 中要具体且符合 world.rules 与 art_style。
 - layout 选择：single 单人；two_shot 双人同框；split_vertical 上下分屏对峙/对话；split_horizontal 左右分屏；
-  manga_3 三格漫画式快速蒙太奇；inset_closeup 大场景+角落特写；full_bleed 无字幕全幅大场面。
+  manga_3 三格漫画式快速蒙太奇；inset_closeup 大场景+角落特写；full_bleed 全幅大场面。
 - image_prompt 用英文，只写构图、动作、表情、光线、镜头，不必重复角色外貌和画风（系统自动拼接）。"""
+
+
+def rules_for(style: StylePreset) -> str:
+    return f"{STORYBOARD_RULES}\n\n本剧风格（{style.description}）专属要求：\n{style.storyboard_rules}"
 
 JUDGE_SYSTEM = """你是严格的改编质量评审。对照原文章节、故事圣经和分镜，按 0-100 打分：
 - relationship_tightness 人物关系紧密度：人物关系是否被准确呈现并推动剧情，关系演变是否可见，互动镜头是否充分。
@@ -48,7 +51,8 @@ class LintReport:
         return "\n".join(lines)
 
 
-def lint_episode(ep: Episode, chapter: Chapter, bible: StoryBible, analysis: ChapterAnalysis) -> LintReport:
+def lint_episode(ep: Episode, chapter: Chapter, bible: StoryBible, analysis: ChapterAnalysis,
+                 style: StylePreset | None = None) -> LintReport:
     """确定性校验并就地修正可自动修复的问题（如中文名→id）。"""
     report = LintReport()
     loc_ids = {loc.id for loc in bible.locations}
@@ -90,6 +94,13 @@ def lint_episode(ep: Episode, chapter: Chapter, bible: StoryBible, analysis: Cha
             if not any({a, b} <= set(s.characters) for s in ep.shots):
                 report.errors.append(f"紧密关系 {a}↔{b} 本章同场却没有同框镜头")
 
+    if style and style.wide_first and ep.shots:
+        wide = sum(1 for s in ep.shots if s.shot_type in ("大远景", "远景", "全景"))
+        if wide / len(ep.shots) < 0.7:
+            report.errors.append(f"大场景风格要求 ≥70% 远景镜头，当前 {wide}/{len(ep.shots)}")
+        pov = [s.id for s in ep.shots if s.shot_type in ("主观", "特写")]
+        if pov:
+            report.errors.append(f"第三视角风格不应使用主观/特写镜头：{', '.join(pov)}")
     if not 30 <= ep.duration <= 240:
         report.errors.append(f"总时长 {ep.duration:.0f}s 不在 30-240s 范围")
     return report
@@ -111,8 +122,10 @@ def generate_episode(
     analysis: ChapterAnalysis,
     history: dict[int, ChapterAnalysis],
     feedback: str = "",
+    style: StylePreset | None = None,
 ) -> Episode:
-    context = bible_brief(bible) + "\n\n" + STORYBOARD_RULES
+    style = style or get_style(None)
+    context = bible_brief(bible) + "\n\n" + rules_for(style)
     prev = history.get(chapter.index - 1)
     prompt = (
         f"{_linked_context(analysis, history)}\n\n"
@@ -124,7 +137,7 @@ def generate_episode(
     )
     if feedback:
         prompt += f"\n\n上一版分镜的评审意见如下，请逐条修正后重新输出完整分镜：\n{feedback}"
-    ep = llm.structured(system=SYSTEM, context=context, prompt=prompt, schema=Episode)
+    ep = llm.structured(system=system_for(style), context=context, prompt=prompt, schema=Episode)
     ep.chapter = chapter.index
     if prev and not ep.recap:
         ep.recap = prev.recap
@@ -148,12 +161,13 @@ def storyboard_chapter(
     history: dict[int, ChapterAnalysis],
     threshold: int = 80,
     max_rounds: int = 3,
+    style: StylePreset | None = None,
 ) -> tuple[Episode, QualityScores, LintReport]:
     feedback = ""
     best: tuple[Episode, QualityScores, LintReport] | None = None
     for _ in range(max_rounds):
-        ep = generate_episode(llm, bible, chapter, analysis, history, feedback)
-        lint = lint_episode(ep, chapter, bible, analysis)
+        ep = generate_episode(llm, bible, chapter, analysis, history, feedback, style=style)
+        lint = lint_episode(ep, chapter, bible, analysis, style)
         scores = judge_episode(llm, bible, chapter, analysis, ep)
         if best is None or scores.min_score > best[1].min_score:
             best = (ep, scores, lint)
