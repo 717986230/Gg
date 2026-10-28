@@ -101,6 +101,23 @@ novel2drama render -w examples/shuihu/ws   # 输出 examples/shuihu/ws/output/E0
 novel2drama run 水浒传.txt -w workspace/shuihu --style watercolor_epic -c 1-3
 ```
 
+### 示例：格林童话《不莱梅的城市乐手》（德语配音，给 Vido 用）
+
+`examples/grimm/` 是按格林童话第 27 篇（公版）手写的德语分镜：驴、狗、猫、公鸡是四脚着地的真动物，
+强盗是穿袍子的狐狸；每句台词都带中文、英文译文（`translations`）。工作区的 `meta.json` 里
+`"language": "de"`、`"clean": true`，所以渲染出来的是「干净版」：不烧字幕、不加片头片尾卡，
+另外输出 `episode_001.{de,zh,en}.srt` 和 `episode_001.cues.json`，交给自带字幕的播放器显示。
+
+```bash
+pip install -e '.[piper]'
+# 下载音色（都来自 sherpa-onnx 的 tts-models 发布页）：thorsten-medium、karlsson-low、ramona-low、kerstin-low、eva_k-x_low
+NOVEL2DRAMA_TTS=piper NOVEL2DRAMA_PIPER_DIR=./piper-voices \
+NOVEL2DRAMA_PIPER_NARRATOR=thorsten-medium@0.92 NOVEL2DRAMA_LINE_GAP=0.7 \
+novel2drama render -w examples/grimm/ws
+```
+
+角色在故事圣经里用 `voice` 指定音色，如 `"piper:karlsson-low@0.95"`。不要用 pavoque 音色，它是 CC BY-NC-SA，不能商用。
+
 ## 配置说明
 
 | 变量 | 说明 |
@@ -108,7 +125,10 @@ novel2drama run 水浒传.txt -w workspace/shuihu --style watercolor_epic -c 1-3
 | `ANTHROPIC_API_KEY` | Claude API Key。剧情分析、分镜和评审都用 Claude，默认模型 `claude-opus-5-5`，可用 `--model` 覆盖 |
 | `NOVEL2DRAMA_IMAGE_BACKEND` | `placeholder`、`scenic` 或 `sdwebui`（不设置时跟随风格）；建议在 SD 里加载动漫底模，并为主角训练 LoRA，一致性更好 |
 | `SDWEBUI_URL` | SD WebUI 地址，需要用 `--api` 启动 |
-| `NOVEL2DRAMA_TTS` | `edge`（默认）或 `silent` |
+| `NOVEL2DRAMA_TTS` | `edge`（默认）、`piper`（离线，德语等）或 `silent` |
+| `NOVEL2DRAMA_PIPER_DIR` | Piper 音色目录，里面每个音色一个 `vits-piper-*` 文件夹（sherpa-onnx 发布的模型包解开即可） |
+| `NOVEL2DRAMA_PIPER_NARRATOR` | 旁白音色，默认 `thorsten-medium`，可带语速如 `thorsten-medium@0.92` |
+| `NOVEL2DRAMA_LINE_GAP` | 台词之间停顿的秒数，默认 0.15；给学语言的人看建议 0.6–0.8 |
 | `NOVEL2DRAMA_FONT` | 字幕字体路径（默认自动查找文泉驿 / 思源黑体 / 苹方 / 微软雅黑） |
 | `DOUYIN_*` | 抖音开放平台凭证，见下文 |
 

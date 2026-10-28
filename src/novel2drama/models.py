@@ -8,6 +8,7 @@ from __future__ import annotations
 from typing import Literal
 
 from pydantic import BaseModel, Field
+from pydantic.json_schema import SkipJsonSchema
 
 
 # ---------------------------------------------------------------- 原文 / 章节
@@ -136,6 +137,8 @@ class DialogueLine(BaseModel):
     speaker: str = Field(description="角色 id；旁白用 narrator")
     text: str = Field(description="台词，尽量保留原文措辞，必要时口语化压缩")
     emotion: str = ""
+    # 字幕译文，按语言代码，如 {"zh": "…"}。手写工作区用；不进给模型的结构化输出 schema
+    translations: SkipJsonSchema[dict[str, str]] = Field(default_factory=dict)
 
 
 class Shot(BaseModel):

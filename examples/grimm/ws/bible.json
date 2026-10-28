@@ -1,0 +1,139 @@
+{
+ "title": "Die Bremer Stadtmusikanten",
+ "world": {
+  "genre": "Märchen",
+  "era": "Märchenzeit",
+  "tone": "heiter, warmherzig",
+  "rules": [
+   "Die Tiere sind echte Tiere auf vier Beinen, sie tragen keine Kleider",
+   "Nach Bremen kommen sie nie"
+  ],
+  "factions": [],
+  "art_style": "storybook watercolor and ink line illustration, soft washes, paper texture, gentle colors, small figures in wide scenery",
+  "palette": [
+   "#E8B04B",
+   "#4F6B4A",
+   "#A63A32",
+   "#F2EAD8"
+  ]
+ },
+ "characters": [
+  {
+   "id": "esel",
+   "name": "Esel",
+   "aliases": [
+    "Grauschimmel"
+   ],
+   "role": "Hauptfigur",
+   "personality": "alt, klug, mutig",
+   "appearance": "老灰驴",
+   "visual_prompt": "old gray donkey, real animal on four legs",
+   "voice": "piper:karlsson-low@0.95",
+   "first_chapter": 1,
+   "arc": ""
+  },
+  {
+   "id": "hund",
+   "name": "Hund",
+   "aliases": [],
+   "role": "Gefährte",
+   "personality": "müde, treu",
+   "appearance": "老猎狗",
+   "visual_prompt": "old brown dog, real animal on four legs",
+   "voice": "piper:ramona-low",
+   "first_chapter": 1,
+   "arc": ""
+  },
+  {
+   "id": "katze",
+   "name": "Katze",
+   "aliases": [],
+   "role": "Gefährtin",
+   "personality": "griesgrämig, schlau",
+   "appearance": "老灰猫",
+   "visual_prompt": "old gray cat, real animal on four legs",
+   "voice": "piper:kerstin-low@1.05",
+   "first_chapter": 1,
+   "arc": ""
+  },
+  {
+   "id": "hahn",
+   "name": "Hahn",
+   "aliases": [
+    "Rotkopf"
+   ],
+   "role": "Gefährte",
+   "personality": "laut, ängstlich",
+   "appearance": "白公鸡，红鸡冠",
+   "visual_prompt": "white rooster with red comb, real animal",
+   "voice": "piper:eva_k-x_low@1.1",
+   "first_chapter": 1,
+   "arc": ""
+  },
+  {
+   "id": "raeuber",
+   "name": "Räuber",
+   "aliases": [],
+   "role": "Gegenspieler",
+   "personality": "feige",
+   "appearance": "穿深灰袍子的狐狸强盗",
+   "visual_prompt": "fox robber in a dark gray robe",
+   "voice": "piper:thorsten-medium@1.15",
+   "first_chapter": 1,
+   "arc": ""
+  }
+ ],
+ "relationships": [
+  {
+   "source": "esel",
+   "target": "hund",
+   "type": "Freunde",
+   "description": "reisen zusammen nach Bremen",
+   "intensity": 4,
+   "since_chapter": 1,
+   "history": []
+  },
+  {
+   "source": "katze",
+   "target": "hahn",
+   "type": "Freunde",
+   "description": "reisen zusammen nach Bremen",
+   "intensity": 4,
+   "since_chapter": 1,
+   "history": []
+  }
+ ],
+ "locations": [
+  {
+   "id": "hof",
+   "name": "Bauernhof",
+   "description": "Hof im Dorf",
+   "visual_prompt": "village farmyard with farmhouses"
+  },
+  {
+   "id": "landstrasse",
+   "name": "Landstraße",
+   "description": "Weg nach Bremen",
+   "visual_prompt": "country road through green meadow"
+  },
+  {
+   "id": "wald",
+   "name": "Wald",
+   "description": "dunkler Wald",
+   "visual_prompt": "deep forest"
+  },
+  {
+   "id": "raeuberhaus",
+   "name": "Räuberhaus",
+   "description": "Haus im Wald",
+   "visual_prompt": "lonely cottage in the forest with a lit window"
+  },
+  {
+   "id": "raeuberhaus_dunkel",
+   "name": "Räuberhaus (dunkel)",
+   "description": "Haus im Wald, Licht aus",
+   "visual_prompt": "lonely cottage in the forest, night"
+  }
+ ],
+ "plot_threads": []
+}
