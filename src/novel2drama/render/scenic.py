@@ -45,6 +45,7 @@ class Scene:
     tablet_text: str = ""
     plaque_text: str = ""
     crowd: str = ""
+    lit: bool = False  # 房子窗里有灯光
 
 
 def parse_scene(prompt: str) -> Scene:
@@ -63,6 +64,14 @@ def parse_scene(prompt: str) -> Scene:
         s.setting = "temple"
     elif _has(p, "palace", "capital city", "宫城", "京城"):
         s.setting = "palace"
+    elif _has(p, "robbers' house", "cottage", "lit window", "小屋"):
+        s.setting = "cottage"
+    elif _has(p, "farmyard", "village", "farm", "村庄", "农庄"):
+        s.setting = "village"
+    elif _has(p, "forest", "woods", "森林"):
+        s.setting = "forest"
+    elif _has(p, "country road", "meadow", "草地"):
+        s.setting = "meadow"
     elif _has(p, "road", "procession", "官道"):
         s.setting = "road"
     elif _has(p, "night sky", "sky full", "漫天"):
@@ -96,11 +105,14 @@ def parse_scene(prompt: str) -> Scene:
             s.effects.add(key)
     if s.setting in ("path", "temple", "mountain"):
         s.effects.add("pines")
+    s.lit = _has(p, "lit window", "窗里有灯")
     m = re.search(r"「(.+?)」", prompt)
     s.tablet_text = m.group(1) if m else ""
     m = re.search(r"『(.+?)』", prompt)
     s.plaque_text = m.group(1) if m else ""
-    if _has(p, "procession", "retinue", "followers", "随从"):
+    if _has(p, "robber band", "fleeing robbers", "强盗们"):
+        s.crowd = "robbers"
+    elif _has(p, "procession", "retinue", "followers", "随从"):
         s.crowd = "retinue"
     elif _has(p, "priests", "道众", "taoists"):
         s.crowd = "priests"
@@ -126,6 +138,8 @@ SPECIES = {
     "bear": ((90, 65, 50), (60, 40, 30), "bear"),
     "rabbit": ((205, 205, 200), (240, 190, 190), "rabbit"),
     "dog": ((170, 130, 90), (120, 85, 60), "dog"),
+    "donkey": ((150, 145, 140), (235, 230, 222), "donkey"),
+    "cat": ((95, 90, 88), (240, 236, 228), "cat"),
     "fox": ((220, 120, 50), (250, 245, 235), "fox"),
     "monkey": ((150, 110, 80), (230, 190, 160), "monkey"),
     "deer": ((190, 140, 90), (240, 230, 210), "deer"),
@@ -178,7 +192,8 @@ def parse_figure(visual_prompt: str) -> Figure:
         f.hat = "taoist"
     if _has(p, "riding", "rides") and _has(p, "ox", "buffalo"):
         f.mount = "ox"
-    f.beast = _has(p, "giant", "beast", "wild", "spirit tiger", "huge") and not _has(p, "robe")
+    # 不穿衣服、四脚着地的真动物（童话里的驴、狗、猫、公鸡）也走「野兽」画法
+    f.beast = _has(p, "giant", "beast", "wild", "spirit tiger", "huge", "animal", "four-legged") and not _has(p, "robe")
     f.child = _has(p, "boy", "child", "little")
     return f
 
@@ -320,6 +335,55 @@ class Painter:
             ld.ellipse([cx - rw, cy - height * 0.06, cx + rw, cy + height * 0.05], fill=green + (235,),
                        outline=ink + (160,), width=SS)
         self.merge(lay)
+
+    def tree(self, x: float, base: float, height: float, dark: bool = False) -> None:
+        """阔叶树：一团团树冠叠在树干上（欧洲童话的森林、村口）。"""
+        lay, ld = self.layer()
+        ink = self.pal["ink"] + (200,)
+        trunk_w = height * 0.07
+        ld.rectangle([x - trunk_w / 2, base - height * 0.45, x + trunk_w / 2, base], fill=(95, 70, 50, 255), outline=ink)
+        leaf = (55, 85, 60) if dark else (85, 125, 75)
+        if self.scene.time == "night":
+            leaf = _lerp(leaf, (25, 30, 45), 0.55)
+        for _ in range(5):
+            r = height * (0.16 + 0.08 * self.rng.random())
+            cx = x + (self.rng.random() - 0.5) * height * 0.35
+            cy = base - height * (0.55 + 0.3 * self.rng.random())
+            ld.ellipse([cx - r, cy - r, cx + r, cy + r], fill=_lerp(leaf, (0, 0, 0), 0.15 * self.rng.random()) + (255,),
+                       outline=ink, width=SS)
+        self.merge(lay, blur=0.4)
+
+    def house(self, cx: float, base: float, width: float, lit: bool = False) -> None:
+        """欧洲乡间房子：白墙、木筋、陡坡屋顶；lit=True 时窗里透出灯光。"""
+        lay, ld = self.layer()
+        ink = self.pal["ink"] + (255,)
+        night = self.scene.time == "night"
+        wall = (200, 190, 170) if not night else (95, 92, 100)
+        wall_h = width * 0.55
+        top = base - wall_h
+        ld.rectangle([cx - width / 2, top, cx + width / 2, base], fill=wall + (255,), outline=ink, width=SS)
+        beam = (110, 75, 50, 255) if not night else (55, 45, 45, 255)
+        for k in range(1, 4):  # 木筋
+            x = cx - width / 2 + width * k / 4
+            ld.line([(x, top), (x, base)], fill=beam, width=2 * SS)
+        ld.line([(cx - width / 2, top + wall_h * 0.45), (cx + width / 2, top + wall_h * 0.45)], fill=beam, width=2 * SS)
+        roof = (150, 70, 50) if not night else (70, 45, 45)
+        ld.polygon([(cx - width * 0.6, top), (cx, top - width * 0.55), (cx + width * 0.6, top)], fill=roof + (255,),
+                   outline=ink, width=SS)
+        ld.rectangle([cx + width * 0.22, top - width * 0.45, cx + width * 0.32, top - width * 0.15], fill=roof + (255,),
+                     outline=ink)  # 烟囱
+        win = (250, 205, 110) if lit else ((175, 195, 205) if not night else (45, 50, 70))
+        ww = width * 0.16
+        for wx in (cx - width * 0.28, cx + width * 0.12):
+            ld.rectangle([wx, top + wall_h * 0.18, wx + ww, top + wall_h * 0.4], fill=win + (255,), outline=ink, width=SS)
+            ld.line([(wx + ww / 2, top + wall_h * 0.18), (wx + ww / 2, top + wall_h * 0.4)], fill=ink, width=SS)
+        ld.rectangle([cx - width * 0.06, base - wall_h * 0.42, cx + width * 0.06, base], fill=beam, outline=ink)  # 门
+        self.merge(lay)
+        if lit:  # 窗口的光晕
+            glow, gd = self.layer()
+            for wx in (cx - width * 0.28, cx + width * 0.12):
+                gd.ellipse([wx - ww, top, wx + ww * 2, top + wall_h * 0.6], fill=(255, 210, 120, 70))
+            self.merge(glow, blur=8)
 
     def roof(self, ld, cx: float, y: float, width: float, height: float, color) -> None:
         """上翘飞檐屋顶。"""
@@ -574,6 +638,9 @@ class Painter:
             ld.line([(hx + facing * h * 0.13, hy), (hx + facing * h * 0.28, hy + h * 0.03)], fill=feat_c + (255,),
                     width=lw)
             return
+        if kind in ("donkey", "dog", "cat", "bird"):
+            self._animal(ld, kind, cx, by, h, head_c, feat_c, facing, lw)
+            return
         # 四足野兽（虎、豹、熊）
         bw, bh = h * 1.6, h * 0.5
         for dx in (-0.35, -0.2, 0.22, 0.36):
@@ -598,6 +665,77 @@ class Painter:
             ld.text((hx, hy - r * 0.45), "王", font=font(max(6, int(r * 0.6))), fill=feat_c + (255,), anchor="mm")
         ld.ellipse([hx + facing * r * 0.5 - r * 0.3, hy + r * 0.05, hx + facing * r * 0.5 + r * 0.3, hy + r * 0.55],
                    fill=(250, 245, 235, 255), outline=ink, width=lw)
+
+
+    def _animal(self, ld, kind, cx, by, h, head_c, feat_c, facing, lw) -> None:
+        """童话里的真动物，四脚着地、不穿衣服：驴、狗、猫，和站着的公鸡。h 是这只动物的身高。"""
+        ink = self.pal["ink"] + (255,)
+        body = head_c + (255,)
+        if kind == "bird":  # 公鸡
+            ld.polygon([(cx - facing * h * 0.25, by - h * 0.55), (cx - facing * h * 0.55, by - h * 0.95),
+                        (cx - facing * h * 0.42, by - h * 0.5)], fill=(40, 70, 60, 255), outline=ink)  # 尾羽
+            ld.ellipse([cx - h * 0.3, by - h * 0.7, cx + h * 0.3, by - h * 0.25], fill=body, outline=ink, width=lw)
+            for dx in (-0.08, 0.08):
+                ld.line([(cx + dx * h, by - h * 0.28), (cx + dx * h, by)], fill=(220, 160, 50, 255), width=lw * 2)
+            hx, hy, r = cx + facing * h * 0.22, by - h * 0.82, h * 0.13
+            ld.ellipse([hx - r, hy - r, hx + r, hy + r], fill=body, outline=ink, width=lw)
+            ld.ellipse([hx - r * 0.6, hy - r * 2.0, hx + r * 0.6, hy - r * 0.7], fill=feat_c + (255,))  # 鸡冠
+            ld.polygon([(hx + facing * r * 0.8, hy - r * 0.2), (hx + facing * r * 1.8, hy + r * 0.1),
+                        (hx + facing * r * 0.8, hy + r * 0.4)], fill=(230, 170, 50, 255), outline=ink)
+            ld.ellipse([hx - r * 0.25, hy + r * 0.6, hx + r * 0.25, hy + r * 1.4], fill=feat_c + (255,))  # 肉垂
+            ld.ellipse([hx + facing * r * 0.3 - r * 0.15, hy - r * 0.3, hx + facing * r * 0.3 + r * 0.15, hy],
+                       fill=ink)
+            return
+        bw, bh = h * 1.0, h * 0.5
+        leg = h * (0.45 if kind == "donkey" else 0.35)
+        top = by - leg - bh * 0.5
+        for dx in (-0.36, -0.22, 0.24, 0.38):
+            ld.line([(cx + dx * bw, top + bh * 0.5), (cx + dx * bw, by)], fill=_lerp(head_c, (0, 0, 0), 0.15) + (255,),
+                    width=max(2, int(h * (0.08 if kind == "donkey" else 0.07))))
+        ld.ellipse([cx - bw / 2, top, cx + bw / 2, top + bh], fill=body, outline=ink, width=lw)
+        tail_x = cx - facing * bw * 0.48
+        if kind == "cat":  # 竖起来的尾巴
+            ld.line([(tail_x, top + bh * 0.4), (tail_x - facing * h * 0.1, top - h * 0.35)], fill=body, width=int(h * 0.07))
+        else:
+            ld.line([(tail_x, top + bh * 0.3), (tail_x - facing * h * 0.12, top + bh * 1.2)], fill=body,
+                    width=max(2, int(h * 0.05)))
+        # 脖子和头
+        nx = cx + facing * bw * 0.42
+        hx = nx + facing * h * (0.12 if kind == "donkey" else 0.06)
+        hy = top - h * (0.22 if kind == "donkey" else 0.08)
+        ld.line([(nx, top + bh * 0.4), (hx, hy)], fill=body, width=int(h * (0.18 if kind == "donkey" else 0.14)))
+        r = h * (0.17 if kind == "donkey" else 0.22 if kind == "dog" else 0.2)
+        if kind == "donkey":  # 长脸
+            x0, x1 = sorted((hx - facing * r * 0.7, hx + facing * r * 1.6))
+            ld.ellipse([x0, hy - r, x1, hy + r * 0.7], fill=body, outline=ink, width=lw)
+            ld.ellipse([hx + facing * r * 1.1 - r * 0.45, hy - r * 0.1, hx + facing * r * 1.1 + r * 0.45, hy + r * 0.65],
+                       fill=feat_c + (255,), outline=ink, width=lw)  # 白鼻头
+            for d in (-0.35, 0.15):  # 竖长耳朵
+                ld.ellipse([hx + d * r - r * 0.18, hy - r * 2.4, hx + d * r + r * 0.18, hy - r * 0.6], fill=body,
+                           outline=ink, width=lw)
+            ld.line([(nx - facing * r * 0.2, top), (hx - facing * r * 0.4, hy - r * 0.6)], fill=(70, 65, 62, 255),
+                    width=lw * 2)  # 鬃毛
+        else:
+            ld.ellipse([hx - r, hy - r, hx + r, hy + r], fill=body, outline=ink, width=lw)
+            ld.ellipse([hx + facing * r * 0.65 - r * 0.45, hy - r * 0.05, hx + facing * r * 0.65 + r * 0.45, hy + r * 0.6],
+                       fill=feat_c + (255,), outline=ink, width=lw)
+            if kind == "cat":  # 尖耳朵、胡子
+                for d in (-0.55, 0.35):
+                    ld.polygon([(hx + d * r - r * 0.3, hy - r * 0.6), (hx + d * r, hy - r * 1.5),
+                                (hx + d * r + r * 0.3, hy - r * 0.6)], fill=body, outline=ink)
+                for k in (-0.1, 0.15):
+                    ld.line([(hx + facing * r * 0.9, hy + r * (0.3 + k)), (hx + facing * r * 1.9, hy + r * (0.2 + 2 * k))],
+                            fill=ink, width=max(1, lw // 2))
+            else:  # 狗：耷拉的耳朵
+                ld.ellipse([hx - facing * r * 0.6 - r * 0.3, hy - r * 0.7, hx - facing * r * 0.6 + r * 0.3, hy + r * 0.5],
+                           fill=feat_c + (255,) if kind != "dog" else _lerp(head_c, (0, 0, 0), 0.3) + (255,),
+                           outline=ink, width=lw)
+        ld.ellipse([hx + facing * r * 0.25 - r * 0.13, hy - r * 0.4, hx + facing * r * 0.25 + r * 0.13, hy - r * 0.12],
+                   fill=ink)
+
+
+# 真动物彼此的大小：以驴为 1
+ANIMAL_SIZE = {"donkey": 1.0, "dog": 0.62, "cat": 0.45, "bird": 0.42}
 
 
 # ------------------------------------------------------------------ 各场景
@@ -665,6 +803,30 @@ def _paint_setting(p: Painter) -> None:
         p.ground_y = lambda x: h * 0.8
         for k in range(4):
             p.pine(w * (0.04 + 0.3 * k) + w * 0.05 * p.rng.random(), h * 0.95, h * 0.2)
+    elif s.setting in ("village", "meadow"):
+        p.mountains(layers=2, tall=0.22, base=0.6)  # 平缓的丘陵
+        p.ground(0.7)
+        lay, ld = p.layer()
+        pts = [(-w * 0.05, h * 0.9), (w * 0.35, h * 0.83), (w * 0.7, h * 0.79), (w * 1.05, h * 0.76)]
+        ld.line(pts, fill=(205, 185, 140, 255), width=int(h * 0.05), joint="curve")
+        p.merge(lay, blur=1)
+        if s.setting == "village":
+            for cx, bw in ((0.14, 0.17), (0.86, 0.15)):
+                p.house(w * cx, h * 0.78, w * bw, lit=s.lit)
+        for k in range(3):
+            p.tree(w * (0.32 + 0.2 * k + 0.05 * p.rng.random()), h * 0.74, h * 0.2)
+        p.ground_y = lambda x: h * 0.86
+    elif s.setting in ("forest", "cottage"):
+        p.mountains(layers=1, tall=0.15, base=0.62)
+        p.ground(0.66)
+        for k in range(9):  # 远处一排树
+            p.tree(w * (k / 8) + w * 0.03 * p.rng.random(), h * 0.68, h * 0.3, dark=True)
+        if s.setting == "cottage":
+            p.house(w * 0.66, h * 0.8, w * 0.3, lit=s.lit)
+            p.anchor = (w * 0.66, h * 0.6)
+        for x in (0.04, 0.95):  # 前景大树
+            p.tree(w * x, h * 1.02, h * 0.62, dark=True)
+        p.ground_y = lambda x: h * 0.86
     elif s.setting == "sky":
         p.mountains(layers=3, tall=0.6, base=0.66)
         p.ground(0.86)
@@ -763,6 +925,7 @@ def _crowd(p: Painter, kind: str, avoid: list[float]) -> None:
         "priests": ("rabbit", (130, 128, 125), "taoist", 5),
         "courtiers": ("deer", (60, 95, 150), "official", 8),
         "workers": ("dog", (140, 120, 90), "", 6),
+        "robbers": ("fox", (70, 60, 70), "", 4),
     }[kind]
     fh = p.figure_h * 0.8
     for k in range(n):
@@ -771,6 +934,17 @@ def _crowd(p: Painter, kind: str, avoid: list[float]) -> None:
             x += p.figure_h
         f = Figure(species=species, robe=robe, hat=hat, pose="kneel" if kind == "courtiers" else "stand")
         p.figure(f, x, p.ground_y(x) + p.rng.random() * fh * 0.15, fh, facing=1 if x < p.w / 2 else -1)
+
+
+def _stack(p: Painter, figs: list[Figure], x: float) -> None:
+    """不莱梅的音乐家：驴在最下面，狗站驴背上，猫站狗背上，公鸡在最上面。按入镜顺序从下往上叠。"""
+    base = p.ground_y(x)
+    for fig in figs:
+        kind = SPECIES.get(fig.species, SPECIES["dog"])[2]
+        fh = p.figure_h * 1.8 * ANIMAL_SIZE.get(kind, 1.0)
+        p.figure(fig, x, base, fh, facing=1)
+        leg = 0.45 if kind == "donkey" else 0.32
+        base -= fh * (leg + 0.2) if kind != "bird" else fh
 
 
 class ScenicBackend:
@@ -793,13 +967,19 @@ class ScenicBackend:
         if scene.crowd:
             _crowd(p, scene.crowd, xs)
         center = sum(xs) / len(xs) if xs else p.w / 2
+        figs = [parse_figure(panel.figure_prompts[i] if i < len(panel.figure_prompts) else panel.characters[i])
+                for i in range(len(xs))]
+        if _has(panel.prompt.lower(), "stacked", "on top of each other", "叠罗汉") and all(f.beast for f in figs):
+            _stack(p, figs, center)
+            figs, xs = [], []
         for i, x in enumerate(xs):
-            fig = parse_figure(panel.figure_prompts[i] if i < len(panel.figure_prompts) else panel.characters[i])
+            fig = figs[i]
             fig.pose = _pose_for(panel.prompt, fig.species)
             facing = 1 if x <= center else -1
             if len(xs) == 1:
                 facing = 1 if x < p.w / 2 else -1
-            fh = p.figure_h * (1.8 if fig.beast else 1.0)
+            kind = SPECIES.get(fig.species, SPECIES["dog"])[2]
+            fh = p.figure_h * (1.8 * ANIMAL_SIZE.get(kind, 1.0) if fig.beast else 1.0)
             base = p.ground_y(x)
             if getattr(p, "throne", None) and fig.hat == "crown":
                 x, base = p.throne

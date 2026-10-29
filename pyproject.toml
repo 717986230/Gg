@@ -18,6 +18,8 @@ dependencies = [
 
 [project.optional-dependencies]
 tts = ["edge-tts>=6.1", "aiohttp>=3.9"]
+# 离线 Piper 语音（德语等）。2.x 起默认包不再带 espeak 前端，Piper 模型读不了，所以锁在 1.x
+piper = ["sherpa-onnx>=1.10,<2"]
 epub = ["ebooklib>=0.18", "beautifulsoup4>=4.12"]
 web = ["fastapi>=0.110", "uvicorn>=0.29", "python-multipart>=0.0.9"]
 dev = ["pytest>=8"]

@@ -1,0 +1,982 @@
+{
+ "episode": {
+  "chapter": 1,
+  "title": "Die Bremer Stadtmusikanten",
+  "hashtags": [
+   "格林童话",
+   "德语",
+   "Märchen"
+  ],
+  "recap": "",
+  "shots": [
+   {
+    "id": "E01-S01",
+    "duration": 4.0,
+    "shot_type": "大远景",
+    "camera": "推",
+    "layout": "full_bleed",
+    "location": "hof",
+    "characters": [],
+    "action": "village farmyard, farmhouses, morning",
+    "image_prompt": "village farmyard, farmhouses, morning",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "Die Bremer Stadtmusikanten. Ein Märchen der Brüder Grimm.",
+      "emotion": "",
+      "translations": {
+       "zh": "不来梅的城市乐手。格林兄弟的童话。",
+       "en": "The Town Musicians of Bremen. A fairy tale by the Brothers Grimm."
+      }
+     },
+     {
+      "speaker": "narrator",
+      "text": "Es war einmal ein Mann, der hatte einen Esel.",
+      "emotion": "",
+      "translations": {
+       "zh": "从前有个人，他有一头驴。",
+       "en": "Once upon a time there was a man who had a donkey."
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "黑场",
+    "source_paragraphs": [
+     0
+    ]
+   },
+   {
+    "id": "E01-S02",
+    "duration": 4.0,
+    "shot_type": "远景",
+    "camera": "移",
+    "layout": "full_bleed",
+    "location": "hof",
+    "characters": [
+     "esel"
+    ],
+    "action": "the old donkey standing alone in the village farmyard",
+    "image_prompt": "the old donkey standing alone in the village farmyard",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "Viele Jahre lang hatte der Esel die schweren Säcke zur Mühle getragen.",
+      "emotion": "",
+      "translations": {
+       "zh": "很多年来，这头驴一直把沉重的麻袋驮到磨坊去。",
+       "en": "For many years the donkey had carried the heavy sacks to the mill."
+      }
+     },
+     {
+      "speaker": "narrator",
+      "text": "Aber nun war er alt und schwach, und sein Herr wollte ihn nicht mehr füttern.",
+      "emotion": "",
+      "translations": {
+       "zh": "可是现在它又老又弱，主人不想再喂它了。",
+       "en": "But now he was old and weak, and his master no longer wanted to feed him."
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     1
+    ]
+   },
+   {
+    "id": "E01-S03",
+    "duration": 4.0,
+    "shot_type": "大远景",
+    "camera": "移",
+    "layout": "full_bleed",
+    "location": "landstrasse",
+    "characters": [
+     "esel"
+    ],
+    "action": "the donkey walking along the country road",
+    "image_prompt": "the donkey walking along the country road",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "Der Esel merkte, dass das nichts Gutes bedeutete, und lief davon.",
+      "emotion": "",
+      "translations": {
+       "zh": "驴察觉到这不是好兆头，就逃走了。",
+       "en": "The donkey saw that this meant nothing good, and he ran away."
+      }
+     },
+     {
+      "speaker": "esel",
+      "text": "Ich gehe nach Bremen. Dort kann ich Stadtmusikant werden!",
+      "emotion": "",
+      "translations": {
+       "zh": "我要去不来梅。在那儿我可以当城市乐手！",
+       "en": "I'm going to Bremen. There I can become a town musician!"
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "叠化",
+    "source_paragraphs": [
+     2
+    ]
+   },
+   {
+    "id": "E01-S04",
+    "duration": 4.0,
+    "shot_type": "远景",
+    "camera": "固定",
+    "layout": "full_bleed",
+    "location": "landstrasse",
+    "characters": [
+     "esel",
+     "hund"
+    ],
+    "action": "the donkey meets a tired old dog lying by the country road",
+    "image_prompt": "the donkey meets a tired old dog lying by the country road",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "Unterwegs fand er einen Hund. Der lag am Weg und keuchte.",
+      "emotion": "",
+      "translations": {
+       "zh": "路上它遇到一条狗。狗躺在路边直喘气。",
+       "en": "On the way he found a dog lying by the road, panting."
+      }
+     },
+     {
+      "speaker": "esel",
+      "text": "Warum keuchst du so, alter Hund?",
+      "emotion": "",
+      "translations": {
+       "zh": "你为什么喘成这样，老狗？",
+       "en": "Why are you panting like that, old dog?"
+      }
+     },
+     {
+      "speaker": "hund",
+      "text": "Ach, ich bin alt und kann nicht mehr jagen. Mein Herr wollte mich totschlagen.",
+      "emotion": "",
+      "translations": {
+       "zh": "唉，我老了，打不了猎了。我的主人想打死我。",
+       "en": "Oh, I'm old and can't hunt any more. My master wanted to kill me."
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     3
+    ]
+   },
+   {
+    "id": "E01-S05",
+    "duration": 4.0,
+    "shot_type": "全景",
+    "camera": "推",
+    "layout": "full_bleed",
+    "location": "landstrasse",
+    "characters": [
+     "esel",
+     "hund"
+    ],
+    "action": "donkey and dog talking on the country road",
+    "image_prompt": "donkey and dog talking on the country road",
+    "dialogue": [
+     {
+      "speaker": "esel",
+      "text": "Weißt du was? Komm mit nach Bremen. Ich spiele die Laute, und du schlägst die Pauke.",
+      "emotion": "",
+      "translations": {
+       "zh": "你知道吗？跟我去不来梅吧。我弹琉特琴，你来敲鼓。",
+       "en": "You know what? Come with me to Bremen. I'll play the lute and you'll beat the drum."
+      }
+     },
+     {
+      "speaker": "hund",
+      "text": "Gut, ich komme mit!",
+      "emotion": "",
+      "translations": {
+       "zh": "好，我跟你去！",
+       "en": "All right, I'll come along!"
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     4
+    ]
+   },
+   {
+    "id": "E01-S06",
+    "duration": 4.0,
+    "shot_type": "远景",
+    "camera": "移",
+    "layout": "full_bleed",
+    "location": "landstrasse",
+    "characters": [
+     "esel",
+     "hund",
+     "katze"
+    ],
+    "action": "a grumpy old cat sitting by the country road, donkey and dog arrive",
+    "image_prompt": "a grumpy old cat sitting by the country road, donkey and dog arrive",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "Bald saß eine Katze am Weg und machte ein Gesicht wie drei Tage Regenwetter.",
+      "emotion": "",
+      "translations": {
+       "zh": "不久，路边坐着一只猫，脸拉得像连下了三天雨。",
+       "en": "Soon a cat sat by the road, with a face like three days of rain."
+      }
+     },
+     {
+      "speaker": "esel",
+      "text": "Was ist los, alte Katze?",
+      "emotion": "",
+      "translations": {
+       "zh": "怎么了，老猫？",
+       "en": "What's the matter, old cat?"
+      }
+     },
+     {
+      "speaker": "katze",
+      "text": "Ich bin alt und meine Zähne sind stumpf. Ich sitze lieber hinter dem Ofen, als Mäuse zu jagen. Da wollte mich meine Frau ertränken.",
+      "emotion": "",
+      "translations": {
+       "zh": "我老了，牙也钝了。我宁愿坐在炉子后面，也不想去抓老鼠。所以女主人想把我淹死。",
+       "en": "I'm old and my teeth are blunt. I'd rather sit behind the stove than chase mice, so my mistress wanted to drown me."
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "叠化",
+    "source_paragraphs": [
+     5
+    ]
+   },
+   {
+    "id": "E01-S07",
+    "duration": 4.0,
+    "shot_type": "全景",
+    "camera": "固定",
+    "layout": "full_bleed",
+    "location": "landstrasse",
+    "characters": [
+     "esel",
+     "hund",
+     "katze"
+    ],
+    "action": "donkey, dog and cat together on the country road",
+    "image_prompt": "donkey, dog and cat together on the country road",
+    "dialogue": [
+     {
+      "speaker": "esel",
+      "text": "Komm mit uns nach Bremen. Du verstehst doch etwas von Nachtmusik!",
+      "emotion": "",
+      "translations": {
+       "zh": "跟我们去不来梅吧。你不是挺懂夜间音乐的嘛！",
+       "en": "Come with us to Bremen. You know a thing or two about night music!"
+      }
+     },
+     {
+      "speaker": "narrator",
+      "text": "Das gefiel der Katze, und sie ging mit.",
+      "emotion": "",
+      "translations": {
+       "zh": "猫很喜欢这个主意，就跟着走了。",
+       "en": "The cat liked that, and she went along."
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     6
+    ]
+   },
+   {
+    "id": "E01-S08",
+    "duration": 4.0,
+    "shot_type": "远景",
+    "camera": "推",
+    "layout": "full_bleed",
+    "location": "hof",
+    "characters": [
+     "esel",
+     "hund",
+     "katze",
+     "hahn"
+    ],
+    "action": "a rooster crowing loudly on the farm gate, three animals stop in the village farmyard",
+    "image_prompt": "a rooster crowing loudly on the farm gate, three animals stop in the village farmyard",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "Dann kamen die drei an einem Hof vorbei. Auf dem Tor saß ein Hahn und schrie aus Leibeskräften.",
+      "emotion": "",
+      "translations": {
+       "zh": "后来三个伙伴经过一个农庄。大门上站着一只公鸡，拼命地叫。",
+       "en": "Then the three passed a farm. On the gate sat a rooster, crowing with all his might."
+      }
+     },
+     {
+      "speaker": "hahn",
+      "text": "Kikeriki! Morgen kommen Gäste, und die Köchin will mich in der Suppe essen. Heute Abend soll mir der Kopf ab!",
+      "emotion": "",
+      "translations": {
+       "zh": "喔喔喔！明天要来客人，厨娘想把我煮汤吃。今天晚上就要砍我的头！",
+       "en": "Cock-a-doodle-doo! Guests are coming tomorrow and the cook wants me in the soup. Tonight they'll cut off my head!"
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     7
+    ]
+   },
+   {
+    "id": "E01-S09",
+    "duration": 4.0,
+    "shot_type": "全景",
+    "camera": "移",
+    "layout": "full_bleed",
+    "location": "landstrasse",
+    "characters": [
+     "esel",
+     "hund",
+     "katze",
+     "hahn"
+    ],
+    "action": "four animals walking together along the country road, dusk",
+    "image_prompt": "four animals walking together along the country road, dusk",
+    "dialogue": [
+     {
+      "speaker": "esel",
+      "text": "Ach was, du Rotkopf, komm lieber mit uns. Etwas Besseres als den Tod findest du überall!",
+      "emotion": "",
+      "translations": {
+       "zh": "什么话，红脑袋，还是跟我们走吧。比死强的出路，到哪儿都找得到！",
+       "en": "Nonsense, redhead, come with us instead. You can find something better than death anywhere!"
+      }
+     },
+     {
+      "speaker": "narrator",
+      "text": "So gingen die vier zusammen weiter.",
+      "emotion": "",
+      "translations": {
+       "zh": "就这样，四个伙伴一起上路了。",
+       "en": "And so the four went on together."
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     8
+    ]
+   },
+   {
+    "id": "E01-S10",
+    "duration": 4.0,
+    "shot_type": "大远景",
+    "camera": "推",
+    "layout": "full_bleed",
+    "location": "wald",
+    "characters": [
+     "esel",
+     "hund",
+     "katze",
+     "hahn"
+    ],
+    "action": "four tired animals resting under a big tree in the forest, dusk",
+    "image_prompt": "four tired animals resting under a big tree in the forest, dusk",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "Aber Bremen war weit. Am Abend kamen sie in einen Wald und wollten dort übernachten.",
+      "emotion": "",
+      "translations": {
+       "zh": "可是不来梅很远。傍晚他们走进一片森林，想在那儿过夜。",
+       "en": "But Bremen was far away. In the evening they came to a forest and wanted to spend the night there."
+      }
+     },
+     {
+      "speaker": "narrator",
+      "text": "Der Esel und der Hund legten sich unter einen großen Baum. Die Katze und der Hahn gingen in die Äste.",
+      "emotion": "",
+      "translations": {
+       "zh": "驴和狗躺在一棵大树下，猫和公鸡爬上了树枝。",
+       "en": "The donkey and the dog lay down under a big tree. The cat and the rooster climbed into the branches."
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "黑场",
+    "source_paragraphs": [
+     9
+    ]
+   },
+   {
+    "id": "E01-S11",
+    "duration": 4.0,
+    "shot_type": "远景",
+    "camera": "推",
+    "layout": "full_bleed",
+    "location": "wald",
+    "characters": [
+     "hahn",
+     "esel"
+    ],
+    "action": "night in the forest, the rooster sees a small light far away",
+    "image_prompt": "night in the forest, the rooster sees a small light far away",
+    "dialogue": [
+     {
+      "speaker": "hahn",
+      "text": "Ich sehe ein Licht! Dort drüben muss ein Haus sein.",
+      "emotion": "",
+      "translations": {
+       "zh": "我看见灯光了！那边一定有一座房子。",
+       "en": "I can see a light! There must be a house over there."
+      }
+     },
+     {
+      "speaker": "esel",
+      "text": "Dann lasst uns hingehen. Hier ist es ungemütlich.",
+      "emotion": "",
+      "translations": {
+       "zh": "那我们过去吧。这里太不舒服了。",
+       "en": "Then let's go there. It's not comfortable here."
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     10
+    ]
+   },
+   {
+    "id": "E01-S12",
+    "duration": 4.0,
+    "shot_type": "远景",
+    "camera": "推",
+    "layout": "full_bleed",
+    "location": "raeuberhaus",
+    "characters": [
+     "esel",
+     "hund"
+    ],
+    "action": "night, the donkey looks through the lit window of the cottage",
+    "image_prompt": "night, the donkey looks through the lit window of the cottage",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "Es war ein Räuberhaus. Der Esel, der größte, ging ans Fenster und schaute hinein.",
+      "emotion": "",
+      "translations": {
+       "zh": "那是一座强盗的房子。驴的个子最高，它走到窗前往里看。",
+       "en": "It was a robbers' house. The donkey, the tallest, went to the window and looked in."
+      }
+     },
+     {
+      "speaker": "hund",
+      "text": "Was siehst du, Grauschimmel?",
+      "emotion": "",
+      "translations": {
+       "zh": "你看见什么了，灰毛驴？",
+       "en": "What do you see, old grey?"
+      }
+     },
+     {
+      "speaker": "esel",
+      "text": "Einen Tisch mit gutem Essen und Trinken. Und Räuber sitzen daran!",
+      "emotion": "",
+      "translations": {
+       "zh": "一张摆满好吃好喝的桌子，还有强盗坐在旁边！",
+       "en": "A table with good food and drink. And robbers sitting at it!"
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "叠化",
+    "source_paragraphs": [
+     11
+    ]
+   },
+   {
+    "id": "E01-S13",
+    "duration": 4.0,
+    "shot_type": "全景",
+    "camera": "固定",
+    "layout": "full_bleed",
+    "location": "raeuberhaus",
+    "characters": [
+     "esel",
+     "hund",
+     "katze",
+     "hahn"
+    ],
+    "action": "night, four animals whisper in front of the cottage",
+    "image_prompt": "night, four animals whisper in front of the cottage",
+    "dialogue": [
+     {
+      "speaker": "hahn",
+      "text": "Das wäre etwas für uns!",
+      "emotion": "",
+      "translations": {
+       "zh": "这正适合我们！",
+       "en": "That would be just the thing for us!"
+      }
+     },
+     {
+      "speaker": "narrator",
+      "text": "Die Tiere überlegten, wie sie die Räuber hinausjagen könnten. Endlich fanden sie ein Mittel.",
+      "emotion": "",
+      "translations": {
+       "zh": "动物们商量怎么把强盗赶出去。最后他们想出了一个办法。",
+       "en": "The animals thought about how they could chase the robbers out. At last they found a way."
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     12
+    ]
+   },
+   {
+    "id": "E01-S14",
+    "duration": 4.0,
+    "shot_type": "远景",
+    "camera": "推",
+    "layout": "full_bleed",
+    "location": "raeuberhaus",
+    "characters": [
+     "esel",
+     "hund",
+     "katze",
+     "hahn"
+    ],
+    "action": "night, the animals stacked on top of each other at the lit window",
+    "image_prompt": "night, the animals stacked on top of each other at the lit window",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "Der Esel stellte sich mit den Vorderfüßen auf das Fenster. Der Hund sprang auf seinen Rücken, die Katze auf den Hund, und der Hahn flog der Katze auf den Kopf.",
+      "emotion": "",
+      "translations": {
+       "zh": "驴把前蹄搭在窗台上。狗跳上驴背，猫跳上狗背，公鸡飞到猫的头上。",
+       "en": "The donkey put his front feet on the window. The dog jumped on his back, the cat on the dog, and the rooster flew onto the cat's head."
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     13
+    ]
+   },
+   {
+    "id": "E01-S15",
+    "duration": 4.0,
+    "shot_type": "全景",
+    "camera": "手持晃动",
+    "layout": "full_bleed",
+    "location": "raeuberhaus",
+    "characters": [
+     "esel",
+     "hund",
+     "katze",
+     "hahn"
+    ],
+    "action": "night, the animals stacked on top of each other, making music at the lit window",
+    "image_prompt": "night, the animals stacked on top of each other, making music at the lit window",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "Dann machten sie zusammen ihre Musik:",
+      "emotion": "",
+      "translations": {
+       "zh": "然后他们一起奏起了音乐：",
+       "en": "Then they made their music together:"
+      }
+     },
+     {
+      "speaker": "esel",
+      "text": "I-aah!",
+      "emotion": "",
+      "translations": {
+       "zh": "咿——啊！",
+       "en": "Hee-haw!"
+      }
+     },
+     {
+      "speaker": "hund",
+      "text": "Wau, wau!",
+      "emotion": "",
+      "translations": {
+       "zh": "汪汪！",
+       "en": "Woof, woof!"
+      }
+     },
+     {
+      "speaker": "katze",
+      "text": "Miau!",
+      "emotion": "",
+      "translations": {
+       "zh": "喵！",
+       "en": "Meow!"
+      }
+     },
+     {
+      "speaker": "hahn",
+      "text": "Kikeriki!",
+      "emotion": "",
+      "translations": {
+       "zh": "喔喔喔！",
+       "en": "Cock-a-doodle-doo!"
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "闪白",
+    "source_paragraphs": [
+     14
+    ]
+   },
+   {
+    "id": "E01-S16",
+    "duration": 4.0,
+    "shot_type": "大远景",
+    "camera": "手持晃动",
+    "layout": "full_bleed",
+    "location": "wald",
+    "characters": [],
+    "action": "night, the robber band fleeing into the dark forest, strong wind",
+    "image_prompt": "night, the robber band fleeing into the dark forest, strong wind",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "Sie stürzten durch das Fenster in die Stube, dass die Scheiben klirrten.",
+      "emotion": "",
+      "translations": {
+       "zh": "它们从窗户冲进屋里，玻璃哗啦啦地响。",
+       "en": "They crashed through the window into the room, and the panes clattered."
+      }
+     },
+     {
+      "speaker": "narrator",
+      "text": "Die Räuber dachten, ein Gespenst käme herein, und flohen voller Angst in den Wald.",
+      "emotion": "",
+      "translations": {
+       "zh": "强盗们以为有鬼进来了，吓得逃进了森林。",
+       "en": "The robbers thought a ghost was coming in and fled into the forest in terror."
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     15
+    ]
+   },
+   {
+    "id": "E01-S17",
+    "duration": 4.0,
+    "shot_type": "全景",
+    "camera": "推",
+    "layout": "full_bleed",
+    "location": "raeuberhaus",
+    "characters": [
+     "esel",
+     "hund",
+     "katze",
+     "hahn"
+    ],
+    "action": "night, four happy animals in front of the cottage, lit window",
+    "image_prompt": "night, four happy animals in front of the cottage, lit window",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "Nun setzten sich die vier Gesellen an den Tisch und aßen, als ob sie vier Wochen hungern sollten.",
+      "emotion": "",
+      "translations": {
+       "zh": "四个伙伴坐到桌边大吃起来，好像接下来要饿上四个星期似的。",
+       "en": "Now the four companions sat down at the table and ate as if they were going to starve for four weeks."
+      }
+     },
+     {
+      "speaker": "narrator",
+      "text": "Dann löschten sie das Licht und suchten sich einen Schlafplatz.",
+      "emotion": "",
+      "translations": {
+       "zh": "然后他们吹灭了灯，各自找地方睡觉。",
+       "en": "Then they put out the light and each looked for a place to sleep."
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "叠化",
+    "source_paragraphs": [
+     16
+    ]
+   },
+   {
+    "id": "E01-S18",
+    "duration": 4.0,
+    "shot_type": "远景",
+    "camera": "移",
+    "layout": "full_bleed",
+    "location": "raeuberhaus_dunkel",
+    "characters": [
+     "esel",
+     "hund",
+     "katze",
+     "hahn"
+    ],
+    "action": "night, the animals asleep around the dark cottage",
+    "image_prompt": "night, the animals asleep around the dark cottage",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "Der Esel legte sich auf den Mist, der Hund hinter die Tür, die Katze auf den Herd zur warmen Asche, und der Hahn setzte sich auf das Dach.",
+      "emotion": "",
+      "translations": {
+       "zh": "驴躺在粪堆上，狗躺在门后，猫躺在灶台上暖和的灰里，公鸡站到了屋顶上。",
+       "en": "The donkey lay on the dung heap, the dog behind the door, the cat on the hearth by the warm ashes, and the rooster perched on the roof."
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     17
+    ]
+   },
+   {
+    "id": "E01-S19",
+    "duration": 4.0,
+    "shot_type": "远景",
+    "camera": "推",
+    "layout": "full_bleed",
+    "location": "wald",
+    "characters": [
+     "raeuber"
+    ],
+    "action": "night, a robber creeps back through the dark forest",
+    "image_prompt": "night, a robber creeps back through the dark forest",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "Nach Mitternacht schickten die Räuber einen Mann zurück, um nachzusehen.",
+      "emotion": "",
+      "translations": {
+       "zh": "半夜过后，强盗们派了一个人回去看看。",
+       "en": "After midnight the robbers sent one man back to have a look."
+      }
+     },
+     {
+      "speaker": "raeuber",
+      "text": "Alles ist still. Wir hätten nicht so schnell weglaufen sollen.",
+      "emotion": "",
+      "translations": {
+       "zh": "一切都静悄悄的。我们不该那么快就跑掉。",
+       "en": "Everything is quiet. We shouldn't have run away so fast."
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "黑场",
+    "source_paragraphs": [
+     18
+    ]
+   },
+   {
+    "id": "E01-S20",
+    "duration": 4.0,
+    "shot_type": "全景",
+    "camera": "推",
+    "layout": "full_bleed",
+    "location": "raeuberhaus_dunkel",
+    "characters": [
+     "raeuber",
+     "katze"
+    ],
+    "action": "night, the robber bends down to the cat in front of the dark cottage",
+    "image_prompt": "night, the robber bends down to the cat in front of the dark cottage",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "Im Dunkeln hielt er die feurigen Augen der Katze für glühende Kohlen.",
+      "emotion": "",
+      "translations": {
+       "zh": "黑暗中，他把猫那双发亮的眼睛当成了烧红的炭。",
+       "en": "In the dark he took the cat's fiery eyes for glowing coals."
+      }
+     },
+     {
+      "speaker": "narrator",
+      "text": "Er wollte ein Streichholz daran anzünden. Aber die Katze sprang ihm ins Gesicht und kratzte ihn.",
+      "emotion": "",
+      "translations": {
+       "zh": "他想用一根火柴去点。可是猫跳到他脸上，抓了他。",
+       "en": "He wanted to light a match on them. But the cat jumped into his face and scratched him."
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     19
+    ]
+   },
+   {
+    "id": "E01-S21",
+    "duration": 4.0,
+    "shot_type": "全景",
+    "camera": "手持晃动",
+    "layout": "full_bleed",
+    "location": "raeuberhaus_dunkel",
+    "characters": [
+     "raeuber",
+     "hund",
+     "esel",
+     "hahn"
+    ],
+    "action": "night, the robber falls in the yard of the dark cottage, the donkey kicks",
+    "image_prompt": "night, the robber falls in the yard of the dark cottage, the donkey kicks",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "Er lief zur Tür, da biss ihn der Hund ins Bein. Im Hof gab ihm der Esel einen kräftigen Tritt.",
+      "emotion": "",
+      "translations": {
+       "zh": "他跑向门口，狗咬了他的腿。到了院子里，驴又狠狠地踢了他一脚。",
+       "en": "He ran to the door, and the dog bit his leg. In the yard the donkey gave him a hard kick."
+      }
+     },
+     {
+      "speaker": "narrator",
+      "text": "Und vom Dach rief der Hahn:",
+      "emotion": "",
+      "translations": {
+       "zh": "屋顶上的公鸡也叫了起来：",
+       "en": "And from the roof the rooster cried:"
+      }
+     },
+     {
+      "speaker": "hahn",
+      "text": "Kikeriki!",
+      "emotion": "",
+      "translations": {
+       "zh": "喔喔喔！",
+       "en": "Cock-a-doodle-doo!"
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "闪白",
+    "source_paragraphs": [
+     20
+    ]
+   },
+   {
+    "id": "E01-S22",
+    "duration": 4.0,
+    "shot_type": "远景",
+    "camera": "手持晃动",
+    "layout": "full_bleed",
+    "location": "wald",
+    "characters": [
+     "raeuber"
+    ],
+    "action": "night, the scratched robber runs back to the robber band in the forest",
+    "image_prompt": "night, the scratched robber runs back to the robber band in the forest",
+    "dialogue": [
+     {
+      "speaker": "raeuber",
+      "text": "Im Haus sitzt eine Hexe, die hat mich gekratzt! An der Tür steht ein Mann mit einem Messer! Im Hof liegt ein schwarzes Ungeheuer mit einem Holzprügel!",
+      "emotion": "",
+      "translations": {
+       "zh": "屋里坐着一个女巫，她抓了我！门口站着一个拿刀的人！院子里躺着一个黑色的怪物，拿着一根木棒！",
+       "en": "In the house sits a witch who scratched me! At the door stands a man with a knife! In the yard lies a black monster with a wooden club!"
+      }
+     },
+     {
+      "speaker": "raeuber",
+      "text": "Und auf dem Dach sitzt der Richter und ruft: Bringt mir den Schelm her!",
+      "emotion": "",
+      "translations": {
+       "zh": "屋顶上还坐着法官，他喊：把那个坏蛋给我带来！",
+       "en": "And on the roof sits the judge, shouting: Bring the rogue to me!"
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "切",
+    "source_paragraphs": [
+     21
+    ]
+   },
+   {
+    "id": "E01-S23",
+    "duration": 4.0,
+    "shot_type": "大远景",
+    "camera": "拉",
+    "layout": "full_bleed",
+    "location": "raeuberhaus",
+    "characters": [
+     "esel",
+     "hund",
+     "katze",
+     "hahn"
+    ],
+    "action": "morning, four happy animals at their cottage in the forest, warm sunlight",
+    "image_prompt": "morning, four happy animals at their cottage in the forest, warm sunlight",
+    "dialogue": [
+     {
+      "speaker": "narrator",
+      "text": "Von da an trauten sich die Räuber nicht mehr in das Haus.",
+      "emotion": "",
+      "translations": {
+       "zh": "从那以后，强盗们再也不敢回那座房子了。",
+       "en": "From then on the robbers no longer dared to go into the house."
+      }
+     },
+     {
+      "speaker": "narrator",
+      "text": "Den vier Bremer Musikanten aber gefiel es darin so gut, dass sie nicht wieder hinaus wollten.",
+      "emotion": "",
+      "translations": {
+       "zh": "可这四个不来梅乐手觉得那里太舒服了，再也不想离开。",
+       "en": "But the four Bremen musicians liked it there so much that they never wanted to leave."
+      }
+     },
+     {
+      "speaker": "narrator",
+      "text": "Und der das zuletzt erzählt hat, dem ist der Mund noch warm.",
+      "emotion": "",
+      "translations": {
+       "zh": "最后讲这个故事的人，嘴巴还热乎着呢。",
+       "en": "And the one who told it last still has a warm mouth."
+      }
+     }
+    ],
+    "sfx": "",
+    "transition": "叠化",
+    "source_paragraphs": [
+     22
+    ]
+   }
+  ],
+  "cliffhanger": ""
+ },
+ "scores": null,
+ "lint": {
+  "note": "Handgeschriebenes Storyboard nach KHM 27 (gemeinfrei); keine LLM-Bewertung"
+ }
+}

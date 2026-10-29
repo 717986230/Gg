@@ -67,6 +67,8 @@ def main(argv: list[str] | None = None) -> None:
         sp.add_argument("--bgm", type=Path, default=None, help="背景音乐文件")
         sp.add_argument("--force", action="store_true", help="忽略已有分镜重新生成")
         sp.add_argument("--publish", action="store_true", help="真正发布到抖音（默认只生成发布清单）")
+        sp.add_argument("--clean", action="store_true", default=None,
+                        help="干净版：不烧字幕、不加片头片尾卡，字幕另存 SRT（给自带字幕的播放器用）")
 
     common(sub.add_parser("run", help="一键全流程"), novel=True)
     common(sub.add_parser("ingest", help="读取并切分章节"), novel=True)
@@ -103,7 +105,7 @@ def main(argv: list[str] | None = None) -> None:
     if args.cmd in ("run", "storyboard"):
         ws.storyboard(_llm(args), only=only, threshold=args.threshold, force=args.force)
     if args.cmd in ("run", "render"):
-        ws.render(only=only, image_backend=args.image_backend, bgm=args.bgm)
+        ws.render(only=only, image_backend=args.image_backend, bgm=args.bgm, clean=args.clean)
     if args.cmd in ("run", "publish"):
         results = ws.publish(only=only, dry_run=not args.publish)
         print(json.dumps(results, ensure_ascii=False, indent=1))

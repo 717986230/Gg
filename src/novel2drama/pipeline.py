@@ -139,7 +139,8 @@ class Workspace:
         return episodes
 
     def render(self, only: list[int] | None = None, image_backend: str | None = None,
-               bgm: Path | None = None) -> list[Path]:
+               bgm: Path | None = None, clean: bool | None = None) -> list[Path]:
+        """clean 不传时跟随工作区 meta.json 的 clean；配音语言取 meta.json 的 language（默认 zh）。"""
         from .render.episode import render_episode
         from .render.images import get_backend
         from .render.tts import TTS
@@ -158,7 +159,8 @@ class Workspace:
             if not found:
                 continue
             video, _ = render_episode(found[0], bible, backend, self.output_dir(ch.index), tts=tts, bgm=bgm,
-                                      style=style)
+                                      style=style, clean=self.meta.get("clean", False) if clean is None else clean,
+                                      language=self.meta.get("language", "zh"))
             log.info("第%d集已渲染：%s", ch.index, video)
             videos.append(video)
         return videos

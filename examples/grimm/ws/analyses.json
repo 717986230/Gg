@@ -1,0 +1,33 @@
+[
+ {
+  "chapter": 1,
+  "summary": "Vier alte Tiere wollen in Bremen Stadtmusikanten werden, vertreiben unterwegs Räuber aus ihrem Haus und bleiben dort.",
+  "key_events": [
+   "Esel läuft davon",
+   "Hund, Katze, Hahn kommen mit",
+   "Räuberhaus",
+   "Tierpyramide",
+   "Räuber fliehen"
+  ],
+  "characters_present": [
+   "esel",
+   "hund",
+   "katze",
+   "hahn",
+   "raeuber"
+  ],
+  "locations": [
+   "hof",
+   "landstrasse",
+   "wald",
+   "raeuberhaus",
+   "raeuberhaus_dunkel"
+  ],
+  "links": [],
+  "hook": "",
+  "new_characters": [],
+  "relationship_changes": [],
+  "plot_threads_opened": [],
+  "plot_threads_closed": []
+ }
+]
